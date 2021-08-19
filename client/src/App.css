@@ -1,0 +1,245 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+}
+.App {
+  background: #0f2027; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #2c5364,
+    #203a43,
+    #0f2027
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to top right,
+    #2c5364,
+    #203a43,
+    #0f2027
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  min-height: 100vh;
+  color: rgb(238, 238, 238);
+}
+
+.logo {
+  font-size: 3rem;
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-btn {
+  color: rgb(238, 238, 238);
+  margin-top: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  font-size: 20px;
+  background-color: rgb(42, 42, 42);
+  padding: 1rem;
+  padding-inline: 3rem;
+  border-radius: 0.7em;
+  border: 1px solid rgb(56, 56, 56);
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 7px 10px;
+  transition: all 0.2s;
+}
+
+.login-btn:hover {
+  color: white;
+  background-color: rgb(107, 107, 107);
+}
+
+.authenticated {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  height: 80px;
+  margin: 0 auto;
+  padding: 0.8rem;
+  padding-inline: 2rem;
+  border: 1px solid rgb(56, 56, 56);
+  border-top: 0px solid;
+  text-transform: uppercase;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  color: rgb(238, 238, 238);
+  box-shadow: rgba(0, 0, 0, 0.6) 0px 8px 12px;
+  background-color: rgb(42, 42, 42);
+}
+nav {
+  display: flex;
+}
+
+.hamburger {
+  font-size: 1.8rem;
+  display: none;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+}
+
+nav li {
+  padding-left: 2rem;
+}
+
+.link:visited {
+  color: rgb(238, 238, 238);
+}
+
+.link {
+  color: rgb(238, 238, 238);
+  font-weight: bolder;
+  text-decoration: none;
+}
+
+.nav-item {
+  background-color: rgb(42, 42, 42);
+  border-radius: 10px;
+  padding: 0.7rem;
+  transition: all 0.2s ease;
+}
+
+.username {
+  color: rgb(238, 238, 238);
+  background: -webkit-linear-gradient(
+    to bottom,
+    #2c5364,
+    #203a43
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #2c5364,
+    #203a43
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 12px;
+  font-weight: bolder;
+
+  padding: 0.7rem;
+}
+
+.nav-item:hover {
+  background-color: rgb(107, 107, 107);
+}
+
+.App {
+  text-align: center;
+}
+
+.avatar {
+  color: rgb(238, 238, 238);
+  /* background: -webkit-linear-gradient(
+    to bottom,
+    #2c5364,
+    #203a43
+  );
+  background: linear-gradient(
+    to bottom,
+    #2c5364,
+    #203a43
+  );  */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 12px; */
+  font-weight: bolder;
+}
+
+.msg {
+  font-weight: bold;
+  border: 1px solid rgb(56, 56, 56);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 12px;
+  color: rgb(238, 238, 238);
+  background-color: #2c5364;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  text-transform: uppercase;
+}
+
+.err {
+  font-weight: bold;
+
+  border: 1px solid rgb(56, 56, 56);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 12px;
+  color: rgb(238, 238, 238);
+  background-color: rgb(146, 47, 47);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  text-transform: uppercase;
+}
+
+form {
+  display: flex;
+  padding-top: 10rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+@media screen and (max-width: 960px) {
+  .hamburger {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  nav ul {
+    display: none;
+  }
+  .active {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    min-width: 150px;
+    right: 10%;
+    z-index: 99;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 8px 14px;
+    border: 1px solid rgb(56, 56, 56);
+    background-color: rgb(42, 42, 42);
+    border-radius: 1rem;
+  }
+  nav li {
+    padding-left: 0;
+    padding-block: 1.5rem;
+  }
+  .authenticated {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .username {
+    max-width: 120px;
+    word-wrap: break-word;
+    font-size: 14px;
+  }
+
+  .avatar {
+    margin: -18px;
+    margin-bottom: -2rem;
+  }
+}
+
+@media screen and (max-height: 780px) {
+  form {
+    padding-top: 1rem;
+  }
+}
