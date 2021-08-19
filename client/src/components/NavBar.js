@@ -34,17 +34,25 @@ function NavBar(props) {
   return (
     <div className="navbar">
       <div>
-        <Link
-          to="/"
-          style={{ color: "rgb(238, 238, 238)" }}
-          className="link logo"
-        >
-          {/* <GiReactor /> */}
+        <Link to="/" className="link logo">
+          <h1 className="logo-h1">Socialite</h1>
         </Link>
       </div>
       <nav ref={menuRef}>
-        <div className="hamburger nav-item" onClick={() => setIsOpen(!isOpen)}>
-          {/* {isOpen ? <FaTimes /> : <GiHamburgerMenu />} */}
+        <div className="hamburger" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? (
+            <div class="container cross">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          ) : (
+            <div class="container">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          )}
         </div>
         <ul className={isOpen ? "active" : ""}>
           {isAuth ? (

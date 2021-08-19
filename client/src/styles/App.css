@@ -1,36 +1,70 @@
+:root {
+  --color1: #211663;
+  --color2: #0cae88;
+  --letter-spacing: 0.5em;
+  --white: #ffffff;
+  --transparent: rgba(221, 221, 221, 32%);
+  --shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.13);
+}
 *,
 *::after,
 *::before {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Nunito", sans-serif;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: var(--letter-spacing);
 }
 .App {
-  background: #0f2027; /* fallback for old browsers */
+  background: #211663; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to bottom,
-    #2c5364,
-    #203a43,
-    #0f2027
+    var(--color1),
+    var(--color2)
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
-    to top right,
-    #2c5364,
-    #203a43,
-    #0f2027
+    to bottom right,
+    var(--color1),
+    var(--color2)
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+  background-attachment: fixed;
   min-height: 100vh;
-  color: rgb(238, 238, 238);
+  color: var(--white);
 }
-
-.logo {
-  font-size: 3rem;
-  margin-left: 0.5rem;
+.logo-h1 {
+  font-size: 2em;
+}
+.container {
   display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--transparent);
+  transition: background-color 200ms ease;
+}
+.line {
+  height: 0.2rem;
+  z-index: 2;
+  opacity: 0.7;
+  background-color: var(--white);
+  width: 1.5rem;
+  margin: 0.15rem;
+  border-radius: 0.1rem;
+  transition: all 350ms ease;
+}
+.cross .line:nth-child(2) {
+  display: none;
+}
+.cross .line:nth-child(1) {
+  transform: rotate(45deg) translate(2.5px, 3px);
+}
+.cross .line:nth-child(3) {
+  transform: rotate(-45deg) translate(2.5px, -3px);
 }
 
 .login-btn {
@@ -63,26 +97,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 80%;
-  height: 80px;
-  margin: 0 auto;
-  padding: 0.8rem;
-  padding-inline: 2rem;
-  border: 1px solid rgb(56, 56, 56);
-  border-top: 0px solid;
+  background-color: transparent;
+  width: 100%;
+  height: 70px;
+  padding-inline: 1rem;
   text-transform: uppercase;
-  border-bottom-left-radius: 2rem;
-  border-bottom-right-radius: 2rem;
-  color: rgb(238, 238, 238);
-  box-shadow: rgba(0, 0, 0, 0.6) 0px 8px 12px;
-  background-color: rgb(42, 42, 42);
 }
 nav {
   display: flex;
 }
 
 .hamburger {
-  font-size: 1.8rem;
   display: none;
 }
 
@@ -96,20 +121,21 @@ nav li {
 }
 
 .link:visited {
-  color: rgb(238, 238, 238);
+  color: var(--white);
 }
 
 .link {
-  color: rgb(238, 238, 238);
+  color: var(--white);
   font-weight: bolder;
   text-decoration: none;
 }
 
 .nav-item {
-  background-color: rgb(42, 42, 42);
-  border-radius: 10px;
-  padding: 0.7rem;
-  transition: all 0.2s ease;
+  background-color: var(--transparent);
+  border-radius: 1em;
+  padding: 0.6rem;
+  font-size: 0.8em;
+  box-shadow: var(--shadow);
 }
 
 .username {
@@ -129,10 +155,6 @@ nav li {
   font-weight: bolder;
 
   padding: 0.7rem;
-}
-
-.nav-item:hover {
-  background-color: rgb(107, 107, 107);
 }
 
 .App {
@@ -193,7 +215,14 @@ form {
   overflow: auto;
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 760px) {
+  .logo-h1 {
+    font-size: 1.1em;
+  }
+  .navbar {
+    height: 65px;
+    padding-inline: 0.8rem;
+  }
   .hamburger {
     display: flex;
     justify-content: center;
@@ -209,16 +238,19 @@ form {
     position: absolute;
     top: 70px;
     min-width: 150px;
-    right: 10%;
+    right: 0.8rem;
     z-index: 99;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 8px 14px;
-    border: 1px solid rgb(56, 56, 56);
-    background-color: rgb(42, 42, 42);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(2.5px);
+    background-color: var(--transparent);
     border-radius: 1rem;
   }
   nav li {
     padding-left: 0;
     padding-block: 1.5rem;
+  }
+  .nav-item {
+    font-size: 0.7em;
   }
   .authenticated {
     display: flex;
@@ -235,6 +267,11 @@ form {
   .avatar {
     margin: -18px;
     margin-bottom: -2rem;
+  }
+}
+@media screen and (max-width: 450px) {
+  .logo-h1 {
+    font-size: 0.8em;
   }
 }
 
