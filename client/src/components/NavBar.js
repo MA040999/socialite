@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { logout } from "../redux/auth/authActions";
 import { Link, useHistory } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 function NavBar(props) {
   let menuRef = useRef();
@@ -38,6 +39,7 @@ function NavBar(props) {
           <h1 className="logo-h1">Socialite</h1>
         </Link>
       </div>
+      <SearchBar/>
       <nav ref={menuRef}>
         <div className="hamburger" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? (
