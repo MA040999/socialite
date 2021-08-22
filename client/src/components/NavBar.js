@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 // import { GiHamburgerMenu, GiReactor } from "react-icons/gi";
-// import { FaTimes, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { connect } from "react-redux";
 import { logout } from "../redux/auth/authActions";
 import { Link, useHistory } from "react-router-dom";
@@ -39,7 +39,7 @@ function NavBar(props) {
           <h1 className="logo-h1">Socialite</h1>
         </Link>
       </div>
-      <SearchBar/>
+      <SearchBar />
       <nav ref={menuRef}>
         <div className="hamburger" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? (
@@ -61,19 +61,19 @@ function NavBar(props) {
             <div className="authenticated">
               <li>
                 <div style={{ fontSize: "2rem" }} className="avatar">
-                  {/* <FaUserCircle /> */}
+                  <FaUserCircle />
                 </div>
                 {/* <img className="avatar" src="logo192.png" alt="" /> */}
                 {/* <div className="avatar">{currentUser.fullname.charAt(0)}</div> */}
               </li>
               <li>
-                <div className="username">{user.fullname}</div>
+                <p className="username">{user.fullname}</p>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/dashboard" className="link nav-item">
                   Dashboard
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <div
                   style={{ cursor: "pointer" }}

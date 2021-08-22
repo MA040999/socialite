@@ -1,9 +1,10 @@
 import React from "react";
+import Posts from "./Posts";
 
 function HomePage() {
   return (
     <div>
-      <h2 style={{ marginTop: "2rem" }}>HOME PAGE</h2>
+      <Posts />
     </div>
   );
 }
