@@ -254,7 +254,11 @@ nav li {
   background-color: transparent;
   outline: none;
   flex-grow: 1;
+  font-weight: bold;
+  align-self: center;
+  resize: none;
   font-size: clamp(0.72rem, 1.4vw, 1.2rem);
+  letter-spacing: 1px;
   color: var(--white);
   border: 0;
   padding: 0 0.8em;
@@ -262,6 +266,23 @@ nav li {
 .post-input::placeholder {
   color: var(--white);
   opacity: 0.5;
+}
+.image-upload-container > input {
+  width: 40px;
+  height: 40px;
+  position: relative;
+}
+.image-upload-container > input::before {
+  content: "";
+  position: absolute;
+  background-image: url("../assets/picture.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  top: -2px;
+  left: -4px;
+  width: 120%;
+  height: 120%;
+  cursor: pointer;
 }
 /* CREATE_POST STYLING END */
 
@@ -280,7 +301,6 @@ nav li {
 }
 .post-image {
   display: flex;
-  align-self: flex-start;
   padding-left: 0.5rem;
 }
 .post-image img {
@@ -495,6 +515,14 @@ form {
   }
   .post-body-container {
     margin-left: 3.1rem;
+  }
+  .image-upload-container > input {
+    width: 30px;
+    height: 30px;
+  }
+  .image-upload-container > input::before {
+    width: 115%;
+    height: 115%;
   }
 }
 @media screen and (max-width: 450px) {
