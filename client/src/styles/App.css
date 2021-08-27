@@ -257,8 +257,9 @@ nav li {
   font-weight: bold;
   align-self: center;
   resize: none;
-  font-size: clamp(0.72rem, 1.4vw, 1.2rem);
+  font-size: clamp(0.7rem, 1.4vw, 1.1rem);
   letter-spacing: 1px;
+  overflow: hidden;
   color: var(--white);
   border: 0;
   padding: 0 0.8em;
@@ -283,6 +284,26 @@ nav li {
   width: 120%;
   height: 120%;
   cursor: pointer;
+}
+.create-post-images {
+  margin-top: 2rem;
+}
+.image-container {
+  position: relative;
+}
+.image {
+  border-radius: 10px;
+  width: 70px;
+  height: 70px;
+}
+.cancel {
+  transform: scale(0.5) !important;
+  background-color: rgb(42, 42, 42, 0.6);
+  border-radius: 50%;
+  position: absolute;
+  top: -20px;
+  cursor: pointer;
+  right: -20px;
 }
 /* CREATE_POST STYLING END */
 
@@ -358,7 +379,7 @@ nav li {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: clamp(0.5rem, 2vw, 2rem);
+  gap: clamp(2rem, 2vw, 2rem);
 }
 /* POST STYLING END */
 
@@ -490,6 +511,10 @@ form {
     margin: -18px;
     margin-bottom: -2rem;
   }
+  .image {
+    width: 55px;
+    height: 55px;
+  }
 }
 @media screen and (max-width: 500px) {
   .App {
@@ -523,6 +548,10 @@ form {
   .image-upload-container > input::before {
     width: 115%;
     height: 115%;
+  }
+  .image {
+    width: 45px;
+    height: 45px;
   }
 }
 @media screen and (max-width: 450px) {

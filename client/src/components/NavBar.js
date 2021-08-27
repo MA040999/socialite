@@ -43,16 +43,16 @@ function NavBar(props) {
       <nav ref={menuRef}>
         <div className="hamburger" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? (
-            <div class="container cross">
-              <div class="line"></div>
-              <div class="line"></div>
-              <div class="line"></div>
+            <div className="container cross">
+              <div className="line"></div>
+              <div className="line"></div>
+              <div className="line"></div>
             </div>
           ) : (
-            <div class="container">
-              <div class="line"></div>
-              <div class="line"></div>
-              <div class="line"></div>
+            <div className="container">
+              <div className="line"></div>
+              <div className="line"></div>
+              <div className="line"></div>
             </div>
           )}
         </div>
