@@ -1,9 +1,23 @@
 import React from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
-function Post() {
+// import { useHistory } from "react-router-dom";
+
+function Post(props) {
+  // const history = useHistory();
+
+  const { id, isComment, onPress } = props;
+
+  // function handleClick() {
+  //   console.log(`id`, id);
+  //   history.push(`/post/${id}`);
+  // }
+
   return (
-    <div className="post-container">
+    <div
+      className={`post-container ${onPress !== undefined ? "clickable" : ""}`}
+      onClick={onPress}
+    >
       <div className="post-heading-container">
         <div className="post-image">
           <img src="/favicon.ico" alt="user" />
@@ -12,16 +26,20 @@ function Post() {
           <h3 className="post-name">Muhammed Ahmed</h3>
           <span className="post-duration">3 minutes ago</span>
         </div>
-        <div className="like-comment-container">
-          <div className="post-like-comment">
-            <AiOutlineHeart className="icon" color="white" />
-            <span>154</span>
+        {isComment ? (
+          ""
+        ) : (
+          <div className="like-comment-container">
+            <div className="post-like-comment">
+              <AiOutlineHeart className="icon" color="white" />
+              <span>154</span>
+            </div>
+            <div className="post-like-comment">
+              <BiCommentDetail className="icon" color="white" />
+              <span>26</span>
+            </div>
           </div>
-          <div className="post-like-comment">
-            <BiCommentDetail className="icon" color="white" />
-            <span>26</span>
-          </div>
-        </div>
+        )}
       </div>
       <div className="post-body-container">
         <p>
@@ -31,14 +49,18 @@ function Post() {
           cum perferendis iusto rerum.
         </p>
       </div>
-      <div className="post-images-container">
-        <img src="/favicon.ico" alt="" />
-        <img src="/favicon.ico" alt="" />
-        <img src="/favicon.ico" alt="" />
-        <img src="/favicon.ico" alt="" />
-        <img src="/favicon.ico" alt="" />
-        <img src="/favicon.ico" alt="" />
-      </div>
+      {isComment ? (
+        ""
+      ) : (
+        <div className="post-images-container">
+          <img src="/favicon.ico" alt="" />
+          <img src="/favicon.ico" alt="" />
+          <img src="/favicon.ico" alt="" />
+          <img src="/favicon.ico" alt="" />
+          <img src="/favicon.ico" alt="" />
+          <img src="/favicon.ico" alt="" />
+        </div>
+      )}
     </div>
   );
 }

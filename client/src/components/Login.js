@@ -34,20 +34,27 @@ function Login(props) {
   };
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)} autoComplete="off">
+    <form
+      className="login-container"
+      onSubmit={(e) => handleSubmit(e)}
+      autoComplete="off"
+    >
       {err ? <div className="err">{err}</div> : ""}
-      <div style={{ marginTop: "3rem" }}>
+      <h2>LOGIN</h2>
+      <div className="login-input-container">
         <input
-          label="Username"
+          className="login-input"
+          label="Email"
           type="text"
+          placeholder="Email Address"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-      </div>
-      <div style={{ marginTop: "3rem" }}>
         <input
+          className="login-input"
           label="Password"
           type="password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

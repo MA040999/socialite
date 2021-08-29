@@ -1,6 +1,8 @@
 :root {
   --color1: #211663;
   --color2: #0cae88;
+  --color1-transparent: #221663be;
+  --color2-transparent: #0cae88bb;
   --letter-spacing: 0.4em;
   --white: #ffffff;
   --transparent: rgba(221, 221, 221, 32%);
@@ -16,6 +18,7 @@
   font-family: "Poppins", sans-serif;
   letter-spacing: var(--letter-spacing);
 }
+
 .App {
   background: #211663; /* fallback for old browsers */
   background: -webkit-linear-gradient(
@@ -29,12 +32,12 @@
     var(--color2)
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-  background-attachment: fixed;
   min-height: 100vh;
   padding: 0.2rem 2rem;
   padding-bottom: 2rem;
   font-weight: bold;
   color: var(--white);
+  text-align: center;
 }
 .logo-h1 {
   font-size: clamp(0.7rem, 2vw, 2rem);
@@ -71,26 +74,6 @@
 }
 .cross .line:nth-child(3) {
   transform: rotate(-45deg) translate(2.5px, -3px);
-}
-
-.login-btn {
-  color: rgb(238, 238, 238);
-  margin-top: 3.5rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  font-size: 20px;
-  background-color: rgb(42, 42, 42);
-  padding: 1rem;
-  padding-inline: 3rem;
-  border-radius: var(--radius);
-  border: 1px solid rgb(56, 56, 56);
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 7px 10px;
-  transition: all 0.2s;
-}
-
-.login-btn:hover {
-  color: white;
-  background-color: rgb(107, 107, 107);
 }
 
 .navbar {
@@ -138,13 +121,13 @@ nav li {
 
 .nav-item {
   display: inline-block;
-  position: relative;
   padding-right: 0.8em;
   padding-block: 0.8em;
   padding-left: calc(0.8em + var(--letter-spacing));
   background-color: var(--transparent);
   border-radius: var(--radius);
   font-size: 0.8em;
+  position: relative;
   z-index: 3;
   transition: transform 200ms ease;
 }
@@ -268,11 +251,16 @@ nav li {
   color: var(--white);
   opacity: 0.5;
 }
+.image-upload-container {
+  display: flex;
+  align-items: center;
+}
 .image-upload-container > input {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 5px;
   align-self: stretch;
+  margin-inline: clamp(1rem, 1.5vw, 2rem);
   position: relative;
 }
 .image-upload-container > input::before {
@@ -317,6 +305,9 @@ nav li {
   padding: 1rem;
   box-shadow: var(--shadow);
 }
+.clickable {
+  cursor: pointer;
+}
 .post-heading-container {
   display: flex;
   align-items: center;
@@ -349,7 +340,7 @@ nav li {
 }
 .post-body-container {
   text-align: left;
-  font-size: clamp(0.65rem, 1vw, 0.95rem);
+  font-size: clamp(0.6rem, 1.5vw, 0.95rem);
   margin-block: 2rem;
   margin-left: 4.6rem;
   line-height: 24px;
@@ -375,6 +366,7 @@ nav li {
 }
 .icon {
   font-size: clamp(1.1rem, 2vw, 2rem);
+  cursor: pointer;
 }
 .post-images-container {
   display: flex;
@@ -385,15 +377,109 @@ nav li {
 }
 /* POST STYLING END */
 
+/* COMMENT STYLING START */
+.comments-container {
+  display: inline-block;
+  width: 85%;
+  margin-top: 2rem;
+  margin-bottom: 6rem;
+}
+
+.comment-maker {
+  position: fixed;
+  background: linear-gradient(to left, var(--color1), var(--color2));
+
+  backdrop-filter: blur(20px);
+  bottom: -4rem;
+  left: 0.6rem;
+  right: 0.6rem;
+}
+/* COMMENT STYLING END */
+
+/* LOGIN STYLING START */
+.login-container {
+  background-color: var(--transparent);
+  display: inline-flex;
+  flex-direction: column;
+  width: 80%;
+  height: 75vh;
+  margin-top: 6vh;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.login-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5vh;
+  width: 40%;
+}
+.login-input {
+  background-color: var(--transparent);
+  border: none;
+  outline: none;
+  color: var(--white);
+  border-radius: var(--radius);
+  font-weight: bolder;
+  letter-spacing: 1px;
+  min-width: 100%;
+  font-size: clamp(0.7rem, 1.4vw, 1.1rem);
+  box-shadow: var(--shadow);
+  padding: 0.4em 0.8em;
+}
+.login-input::placeholder {
+  color: var(--white);
+  opacity: 0.5;
+}
+.login-btn {
+  color: var(--white);
+  /* margin-top: 3.5rem; */
+  font-weight: bold;
+  /* margin-bottom: 2rem; */
+  font-size: clamp(0.7em, 1.6vw, 1em);
+  background: linear-gradient(
+    to top right,
+    var(--color1-transparent),
+    var(--color2-transparent)
+  );
+  text-transform: uppercase;
+  padding: 1em 3em;
+  border: none;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 3;
+  transition: transform 200ms ease;
+}
+
+.login-btn::before {
+  content: "";
+  position: absolute;
+  opacity: 0;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 200ms ease;
+}
+.login-btn:hover::before {
+  opacity: 1;
+}
+.login-btn:hover {
+  transform: scale(1.1);
+}
+
+/* LOGIN STYLING END */
+
 .username {
   color: var(--white);
   font-weight: bold;
   max-width: 120px;
   font-size: clamp(0.6rem, 1vw, 0.7rem);
-}
-
-.App {
-  text-align: center;
 }
 
 .avatar {
@@ -439,15 +525,6 @@ nav li {
   border-radius: var(--radius);
   padding: 0.5rem;
   text-transform: uppercase;
-}
-
-form {
-  display: flex;
-  padding-top: 10rem;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow: auto;
 }
 
 @media screen and (max-width: 1000px) {
@@ -517,6 +594,20 @@ form {
     width: 55px;
     height: 55px;
   }
+  .image-upload-container > input {
+    width: 23px;
+    height: 23px;
+  }
+  .comment-maker {
+    background: linear-gradient(
+      to left,
+      var(--color1-transparent),
+      var(--color2-transparent)
+    );
+  }
+  .login-input-container {
+    width: 65%;
+  }
 }
 @media screen and (max-width: 500px) {
   .App {
@@ -544,8 +635,8 @@ form {
     margin-left: 3.1rem;
   }
   .image-upload-container > input {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
   }
   .image-upload-container > input::before {
     width: 115%;
@@ -554,6 +645,9 @@ form {
   .image {
     width: 45px;
     height: 45px;
+  }
+  .login-input-container {
+    width: 80%;
   }
 }
 @media screen and (max-width: 450px) {
@@ -579,10 +673,13 @@ form {
     width: 20em;
     transform: scale(0.7);
   }
+  .login-input-container {
+    width: 80%;
+  }
 }
 
-@media screen and (max-height: 780px) {
+/* @media screen and (max-height: 780px) {
   form {
     padding-top: 1rem;
   }
-}
+} */

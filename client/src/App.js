@@ -6,10 +6,11 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import NavBar from "./components/NavBar";
-import Dashboard from "./components/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
+// import Dashboard from "./components/Dashboard";
+// import ProtectedRoute from "./components/ProtectedRoute";
 import { connect } from "react-redux";
 import { verifyAuth } from "./redux/auth/authActions";
+import PostInner from "./components/PostInner";
 
 function App(props) {
   const { isAuth, verifyAuth } = props;
@@ -67,12 +68,13 @@ function App(props) {
         {isAuth === false && (
           <Route path="/signup" exact render={() => <Signup />} />
         )}
+        <Route path="/post/:id" component={PostInner} />
 
-        <ProtectedRoute
+        {/* <ProtectedRoute
           path="/dashboard"
           component={Dashboard}
           isAuthenticated={isAuth}
-        />
+        /> */}
         {/* {isAuthenticated && (
             <Route path="/dashboard" exact component={Dashboard} />
           )} */}
