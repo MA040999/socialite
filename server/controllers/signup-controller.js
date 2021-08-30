@@ -1,7 +1,7 @@
 const db = require("../models");
 const jwt = require("jsonwebtoken");
 
-exports.createUser = (req, res) => {
+const createUser = (req, res) => {
   try {
     db.Users.create(req.body).then((result) => {
       const token = jwt.sign(
@@ -14,7 +14,7 @@ exports.createUser = (req, res) => {
       res.cookie("jwt", token, {
         httpOnly: true,
         sameSite: process.env.NODE_ENV === "production" ? "none" : true,
-        sameSite: true,
+        secure: true,
         maxAge: 1000 * 60 * 60 * 5,
       });
       res.status(200).json({ id: result._id, fullname: result.fullname });
@@ -23,3 +23,5 @@ exports.createUser = (req, res) => {
     res.status(500).json("Error occured, user not created");
   }
 };
+
+module.exports = { createUser };

@@ -5,9 +5,10 @@ import { connect } from "react-redux";
 import { signup, authError } from "../redux/auth/authActions";
 
 function Signup(props) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [msg, setMsg] = useState("");
   // const [err, setErr] = useState("");
 
@@ -16,53 +17,73 @@ function Signup(props) {
 
   let handleSubmit = (e) => {
     e.preventDefault();
-    if (username === "" || fullname === "" || password === "") {
+    if (email === "" || fullname === "" || password === "") {
       setMsg("");
       // setErr("Please fill all the fields");
       error("Please fill both the fields");
     } else {
-      error("");
-      signup({ fullname, username, password }, history);
-      // setErr("");
-      // axios.post("/signup", { fullname, username, password }).then((res) => {
-      //   setCurrentUser({ id: res.data.id, fullname: res.data.fullname });
-      //   setIsAuthenticated(true);
-      //   setFullname("");
-      //   setUsername("");
-      //   setPassword("");
-      //   history.push("/dashboard");
-      // });
+      if (password === confirmPassword) {
+        error("");
+        signup({ fullname, email, password }, history);
+        // setErr("");
+        // axios.post("/signup", { fullname, email, password }).then((res) => {
+        //   setCurrentUser({ id: res.data.id, fullname: res.data.fullname });
+        //   setIsAuthenticated(true);
+        //   setFullname("");
+        //   setEmail("");
+        //   setPassword("");
+        //   history.push("/dashboard");
+        // });
+      } else {
+        error("Passwords are not matching");
+      }
     }
   };
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)} autoComplete="off">
+    <form
+      className="login-container"
+      onSubmit={(e) => handleSubmit(e)}
+      autoComplete="off"
+    >
       {msg ? <div className="msg">{msg}</div> : ""}
       {err ? <div className="err">{err}</div> : ""}
-      <div style={{ marginTop: "3rem" }}>
+      <h2>SIGNUP</h2>
+      <div className="login-input-container">
         <input
+          className="login-input"
           label="Fullname"
+          placeholder="Fullname"
           type="text"
           value={fullname}
           onChange={(e) => setFullname(e.target.value)}
         />
-      </div>
-      <div style={{ marginTop: "3rem" }}>
         <input
-          label="Username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          className="login-input"
+          label="Email Address"
+          placeholder="Email Address"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
-      </div>
-      <div style={{ marginTop: "3rem" }}>
         <input
+          className="login-input"
+          placeholder="Password"
           label="Password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <input
+          className="login-input"
+          placeholder="Confirm Password"
+          label="Confirm Password"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
       </div>
+
       <button type="submit" className="login-btn">
         Sign Up
       </button>
@@ -80,8 +101,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signup: ({ fullname, username, password }, history) =>
-      dispatch(signup({ fullname, username, password }, history)),
+    signup: ({ fullname, email, password }, history) =>
+      dispatch(signup({ fullname, email, password }, history)),
     error: (msg) => {
       dispatch(authError(msg));
     },

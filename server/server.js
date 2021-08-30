@@ -17,10 +17,10 @@ app.use(
   })
 );
 
-app.use("/signup/", require("./api/signup"));
-app.use("/login/", require("./api/login"));
-app.use("/auth/", require("./api/auth"));
-app.use("/logout/", require("./api/logout"));
+app.use("/signup/", require("./routes/signup"));
+app.use("/login/", require("./routes/login"));
+app.use("/auth/", require("./routes/auth"));
+app.use("/logout/", require("./routes/logout"));
 
 // if (isProduction) {
 //   // express will serve up production assets

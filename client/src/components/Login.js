@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { login, authError } from "../redux/auth/authActions";
 
 function Login(props) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [err, setErr] = useState("");
 
@@ -14,16 +14,16 @@ function Login(props) {
 
   let handleSubmit = function (e) {
     e.preventDefault();
-    if (username === "" || password === "") {
+    if (email === "" || password === "") {
       error("Please fill both the fields");
       // setErr("Please fill both the fields");
     } else {
       // setErr("");
       error("");
-      login({ username, password }, history);
+      login({ email, password }, history);
 
       // try {
-      //   // const user = await axios.post("/login/", { username, password });
+      //   // const user = await axios.post("/login/", { email, password });
       //   // setCurrentUser(user.data);
       //   // setIsAuthenticated(true);
       //   // history.push("/dashboard");
@@ -45,10 +45,10 @@ function Login(props) {
         <input
           className="login-input"
           label="Email"
-          type="text"
+          type="email"
           placeholder="Email Address"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           className="login-input"
@@ -76,8 +76,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: ({ username, password }, history) =>
-      dispatch(login({ username, password }, history)),
+    login: ({ email, password }, history) =>
+      dispatch(login({ email, password }, history)),
     error: (msg) => {
       dispatch(authError(msg));
     },

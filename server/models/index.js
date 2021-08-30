@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
-mongoose.connect(
-  "mongodb+srv://admin:admin@cluster0.ugkj9.mongodb.net/authentication",
-  {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
 
 module.exports = {
   Users: require("./Users"),
+  Posts: require('./Posts'),
 };

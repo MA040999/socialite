@@ -2,7 +2,7 @@ const db = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-exports.authenticateUser = async function (req, res) {
+const authenticateUser = async function (req, res) {
   try {
     const user = await db.Users.findOne({ username: req.body.username });
 
@@ -44,3 +44,5 @@ exports.authenticateUser = async function (req, res) {
     res.status(500).json({ message: "Something went wrong!" });
   }
 };
+
+module.exports = { authenticateUser };
