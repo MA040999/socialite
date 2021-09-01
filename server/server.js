@@ -21,6 +21,7 @@ app.use("/signup/", require("./routes/signup"));
 app.use("/login/", require("./routes/login"));
 app.use("/auth/", require("./routes/auth"));
 app.use("/logout/", require("./routes/logout"));
+app.use('/posts/', require('./routes/post'))
 
 // if (isProduction) {
 //   // express will serve up production assets
