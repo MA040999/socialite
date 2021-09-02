@@ -1,4 +1,4 @@
-import { GET_ALL_POSTS } from "./postTypes";
+import { CREATE_POST, GET_ALL_POSTS } from "./postTypes";
 import app from "../../axiosConfig";
 
 export const getAllPost = () => async (dispatch) => {
@@ -9,9 +9,10 @@ export const getAllPost = () => async (dispatch) => {
     }
 }
 
-export const createPost = () => async (dispatch) => {
+export const createPost = (content, images) => async (dispatch) => {
     try {
-        
+        const post = await app.post('/posts/createPost/', {content, images})
+        dispatch({type: CREATE_POST, payload: post.data})
     } catch (error) {
         
     }

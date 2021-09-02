@@ -1,10 +1,6 @@
 import { CREATE_POST, GET_ALL_POSTS } from "./postTypes";
 
-const intitalState = {
-    
-};
-
-const postReducer = (state = intitalState, action) => {
+const postReducer = (state = [], action) => {
     switch (action.type) {
         case GET_ALL_POSTS:
             return {
@@ -12,7 +8,8 @@ const postReducer = (state = intitalState, action) => {
             }
         case CREATE_POST:
             return {
-                ...state
+                ...state,
+                ...action.payload
             }
     
         default:

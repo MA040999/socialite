@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 const postSchema = mongoose.Schema({
-  userID: {
+  // userID: {
+  //   type: String,
+  //   required: true,
+  // },
+  content: {
     type: String,
     required: true,
   },
@@ -19,10 +23,6 @@ const postSchema = mongoose.Schema({
 //   },
   images: {
     type: [String],
-    default: undefined,
-  },
-  content: {
-    type: String,
     required: true,
   }
 });
