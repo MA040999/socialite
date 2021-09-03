@@ -7,21 +7,46 @@ import { createPost } from "../redux/posts/postActions";
 
 function CreatePost({ isComment }) {
   const dispatch = useDispatch()
-  const [images, setImages] = useState([]);
-  const [base64, setBase64] = useState([])
+  const [imagesFileArray, setImagesFileArray] = useState([]);
+  const [imageUrls, setImageUrls] = useState([])
   const [postInput, setPostInput] = useState("")
 
   const handleSubmit = () => {
-    dispatch(createPost(postInput, base64))
+    let formData = new FormData()
+    Array.from(imagesFileArray).map(file=>{
+      formData.append('file', file)
+    })
+    formData.append('content', postInput)
+    
+    dispatch(createPost(formData))
+  }
+
+  const handleSelectImage = (e) => {
+    const files = e.target.files
+    const urls = [];
+    const array = [];
+
+    Array.from(files).map(file => {
+      const isSelected = imagesFileArray.find(
+        (image) => image.name === file.name
+      );
+      if (!isSelected) {
+        urls.push(URL.createObjectURL(file))
+        array.push(file)
+      }
+    })
+    setImagesFileArray([...imagesFileArray, ...array]);
+    setImageUrls([...imageUrls, ...urls])
+    e.target.value = ""
   }
  
   const removeImage = (index) => {
-    setImages((oldImages) => {
+    setImagesFileArray((oldImages) => {
       const newImages = [...oldImages];
       newImages.splice(index, 1);
       return newImages;
     });
-    setBase64((oldImages) => {
+    setImageUrls((oldImages) => {
       const newImages = [...oldImages];
       newImages.splice(index, 1);
       return newImages;
@@ -51,9 +76,11 @@ function CreatePost({ isComment }) {
           ""
         ) : (
           <div className="image-upload-container">
-            <FileBase64
+            {/* <input
               type="file"
+              accept="image/*"
               multiple={true}
+              onChange= {e => handleSelectImage(e)}
               onDone={(files) => {
                 const arr1 = [];
                 const arr2 = []
@@ -72,16 +99,23 @@ function CreatePost({ isComment }) {
                 setImages([...images, ...arr1]);
                 setBase64([...base64, ...arr2])
               }}
+            /> */}
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              name="imageFile"
+              onChange= {e => handleSelectImage(e)}
             />
           </div>
         )}
         <RiSendPlaneFill className="icon" onClick={handleSubmit} />
       </div>
-      {images.length > 0 && (
+      {imageUrls.length > 0 && (
         <div className="post-images-container  create-post-images">
-          {images.map((image, index) => (
-            <div key={image.name} className="image-container">
-              <img src={`${image.base64}`} className="image" alt="user" />
+          {imageUrls.map((image, index) => (
+            <div key={index} className="image-container">
+              <img src={image} className="image" alt="user" />
               <div
                 className="container cross cancel"
                 onClick={() => removeImage(index)}
@@ -95,8 +129,8 @@ function CreatePost({ isComment }) {
         </div>
       )}
 
-      {/* <pre style={{ color: "black" }}>{JSON.stringify(images, null, 2)}</pre>
-      <pre style={{ color: "black" }}>{JSON.stringify(base64, null, 2)}</pre> */}
+      {/* <pre style={{ color: "black" }}>{JSON.stringify(imagesFileArray, null, 2)}</pre>
+      <pre style={{ color: "black" }}>{JSON.stringify(imageUrls, null, 2)}</pre> */}
     </div>
   );
 }

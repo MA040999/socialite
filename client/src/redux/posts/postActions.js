@@ -9,9 +9,9 @@ export const getAllPost = () => async (dispatch) => {
     }
 }
 
-export const createPost = (content, images) => async (dispatch) => {
+export const createPost = (formData) => async (dispatch) => {
     try {
-        const post = await app.post('/posts/createPost/', {content, images})
+        const post = await app.post('/posts/createPost/', formData)
         dispatch({type: CREATE_POST, payload: post.data})
     } catch (error) {
         

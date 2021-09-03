@@ -284,6 +284,7 @@ nav li {
 .image {
   border-radius: 10px;
   width: 70px;
+  object-fit: cover;
   height: 70px;
 }
 .cancel {
