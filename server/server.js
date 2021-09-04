@@ -3,7 +3,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const { resolve } = require("path");
 const cors = require("cors");
-const fileUpload = require('express-fileupload')
+const fileUpload = require("express-fileupload");
 
 const isProduction = process.env.NODE_ENV === "production";
 const PORT = process.env.PORT || 4000;
@@ -19,11 +19,13 @@ app.use(
   })
 );
 
+app.use("/uploads", express.static("uploads"));
+
 app.use("/signup/", require("./routes/signup"));
 app.use("/login/", require("./routes/login"));
 app.use("/auth/", require("./routes/auth"));
 app.use("/logout/", require("./routes/logout"));
-app.use('/posts/', require('./routes/post'))
+app.use("/posts/", require("./routes/post"));
 
 // if (isProduction) {
 //   // express will serve up production assets

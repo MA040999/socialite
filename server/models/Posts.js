@@ -5,11 +5,8 @@ const postSchema = mongoose.Schema({
   //   type: String,
   //   required: true,
   // },
-  content: {
-    type: String,
-    required: true,
-  },
-  createAt: {
+  content: String,
+  createdAt: {
     type: Date,
     default: new Date(),
   },
@@ -17,14 +14,11 @@ const postSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
-//   comments: {
-//     type: [],
-//     default: 0,
-//   },
-  images: {
-    type: [String],
-    required: true,
-  }
+  //   comments: {
+  //     type: [],
+  //     default: 0,
+  //   },
+  images: [String],
 });
 
 module.exports = mongoose.model("Post", postSchema);

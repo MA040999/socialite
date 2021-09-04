@@ -1,20 +1,15 @@
-import { CREATE_POST, GET_ALL_POSTS } from "./postTypes";
+import { CREATE_POST, GET_POSTS } from "./postTypes";
 
 const postReducer = (state = [], action) => {
-    switch (action.type) {
-        case GET_ALL_POSTS:
-            return {
-                ...state
-            }
-        case CREATE_POST:
-            return {
-                ...state,
-                ...action.payload
-            }
-    
-        default:
-            return state
-    }
-}
+  switch (action.type) {
+    case GET_POSTS:
+      return [...action.payload];
+    case CREATE_POST:
+      return [...state, action.payload];
 
-export default postReducer
+    default:
+      return state;
+  }
+};
+
+export default postReducer;

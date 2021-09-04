@@ -6,9 +6,9 @@ import logger from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 const reducer = combineReducers({
-  authReducer,
-  postReducer
-})
+  auth: authReducer,
+  posts: postReducer,
+});
 
 const store = createStore(
   reducer,
