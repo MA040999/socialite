@@ -40,7 +40,7 @@ const createPost = async function (req, res) {
 
 const getPosts = async function (req, res) {
   try {
-    const posts = await db.Posts.find().sort({ createdAt: 1 }).limit(10);
+    const posts = await db.Posts.find().sort({ createdAt: -1 }).limit(10);
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json(error.message);

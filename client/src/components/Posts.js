@@ -31,6 +31,7 @@ function Posts() {
             onPress={() => {
               handleClick(post._id);
             }}
+            id={post._id}
             content={post.content}
             createdAt={post.createdAt}
             likeCount={post.likeCount}

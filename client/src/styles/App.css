@@ -301,9 +301,6 @@ input[type="file"] {
   padding: 1rem;
   box-shadow: var(--shadow);
 }
-.clickable {
-  cursor: pointer;
-}
 .post-heading-container {
   display: flex;
   align-items: center;
@@ -336,8 +333,8 @@ input[type="file"] {
 }
 .post-body-container {
   text-align: left;
-  font-size: clamp(0.6rem, 1.5vw, 0.95rem);
-  margin-block: 2rem;
+  font-size: clamp(0.75rem, 1.5vw, 0.95rem);
+  margin-block: clamp(0.9rem, 2vw, 2rem);
   margin-left: 4.6rem;
   line-height: 24px;
   letter-spacing: 1px;
@@ -345,19 +342,19 @@ input[type="file"] {
 .post-body-container p {
   letter-spacing: 1px;
 }
-.like-comment-container {
+.icons-container {
   display: flex;
   align-self: flex-start;
   gap: 1.5rem;
   font-size: clamp(0.8rem, 1.2vw, 1rem);
 }
-.post-like-comment {
+.icons-container-inner {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
 }
-.post-like-comment span {
+.icons-container-inner span {
   letter-spacing: 1px;
 }
 .icon {
@@ -369,7 +366,12 @@ input[type="file"] {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: clamp(2rem, 2vw, 2rem);
+  gap: clamp(1.5rem, 2vw, 2rem);
+}
+.like-comment-container {
+  margin-left: 4.6rem;
+  margin-top: 2rem;
+  margin-bottom: 0.2rem;
 }
 /* POST STYLING END */
 
@@ -543,6 +545,9 @@ input[type="file"] {
   .post-body-container {
     margin-left: 3.6rem;
   }
+  .like-comment-container {
+    margin-left: 3.6rem;
+  }
   .hamburger {
     display: flex;
     justify-content: center;
@@ -588,8 +593,8 @@ input[type="file"] {
     margin-bottom: -2rem;
   }
   .image {
-    width: 55px;
-    height: 55px;
+    width: 50px;
+    height: 50px;
   }
   .image-upload-container > label {
     width: 23px;
@@ -620,9 +625,9 @@ input[type="file"] {
     transform: scale(0.8);
     top: 40px;
     right: 0.2rem;
-    animation: animate-navbar 0.06s ease;
+    animation: animate-navbar 0.05s ease;
   }
-  .like-comment-container {
+  .icons-container {
     gap: 1rem;
   }
   .post-image img {
@@ -632,13 +637,16 @@ input[type="file"] {
   .post-body-container {
     margin-left: 3.1rem;
   }
+  .like-comment-container {
+    margin-left: 3.1rem;
+  }
   .image-upload-container > label {
     width: 20px;
     height: 20px;
   }
   .image {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
   }
   .login-input-container {
     width: 80%;
@@ -648,10 +656,10 @@ input[type="file"] {
   .search-container {
     transform: scale(0.7);
   }
-  .like-comment-container {
+  .icons-container {
     gap: 0.7rem;
   }
-  .post-like-comment {
+  .icons-container-inner {
     gap: 0.4rem;
   }
   .post-image {
@@ -661,6 +669,9 @@ input[type="file"] {
     padding-left: 0.5rem;
   }
   .post-body-container {
+    margin-left: 2rem;
+  }
+  .like-comment-container {
     margin-left: 2rem;
   }
   .search-container:focus-within {

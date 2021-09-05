@@ -92,7 +92,7 @@ function CreatePost({ isComment }) {
           ""
         ) : (
           <div className="image-upload-container">
-            <label for="file-upload" class="custom-file-upload"></label>
+            <label htmlFor="file-upload" className="custom-file-upload"></label>
             <input
               id="file-upload"
               type="file"

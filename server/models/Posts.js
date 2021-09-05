@@ -8,7 +8,7 @@ const postSchema = mongoose.Schema({
   content: String,
   createdAt: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
   likeCount: {
     type: Number,
