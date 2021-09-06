@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import TextareaAutosize from "react-textarea-autosize";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { BiImageAdd } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { createPost } from "../redux/posts/postActions";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 function CreatePost({ isComment, isEditPost }) {
   const dispatch = useDispatch();
@@ -87,13 +87,18 @@ function CreatePost({ isComment, isEditPost }) {
           placeholder={
             isComment ? "Leave a comment..." : "What's on your mind?"
           }
-          maxRows={isEditPost ? 19 : undefined}
+          minRows={1}
+          maxRows={isComment ? 4 : 10}
           value={postInput}
           onChange={(e) => setPostInput(e.target.value)}
           autoComplete="off"
         />
 
-        <div className={`icons-container ${isEditPost ? "" : "creator"}`}>
+        <div
+          className={`icons-container scroll-bar-margin ${
+            isEditPost ? "" : "creator"
+          }`}
+        >
           {isComment ? (
             ""
           ) : (

@@ -19,6 +19,28 @@
   letter-spacing: var(--letter-spacing);
 }
 
+/*SCROLL BAR STYLING START*/
+html::-webkit-scrollbar,
+.post-input::-webkit-scrollbar {
+  width: 0.5vw;
+}
+.post-input::-webkit-scrollbar {
+  width: 0.65vw;
+}
+html::-webkit-scrollbar-thumb,
+.post-input::-webkit-scrollbar-thumb {
+  background-color: var(--color1);
+  border-radius: var(--radius);
+}
+html::-webkit-scrollbar-track,
+.post-input::-webkit-scrollbar-track {
+  background-color: var(--color2);
+}
+.post-input::-webkit-scrollbar-track {
+  border-radius: var(--radius);
+}
+/*SCROLL BAR STYLING END*/
+
 .App {
   background: #211663; /* fallback for old browsers */
   background: -webkit-linear-gradient(
@@ -242,11 +264,13 @@ nav li {
   resize: none;
   font-size: clamp(0.7rem, 1.4vw, 1.1rem);
   letter-spacing: 1px;
-  overflow: hidden;
+  overflow: visible;
   color: var(--white);
   border: 0;
   padding: 0 0.8em;
+  min-height: 15px !important;
 }
+
 .post-input::placeholder {
   color: var(--white);
   opacity: 0.5;
@@ -260,6 +284,9 @@ input[type="file"] {
 }
 .creator {
   align-self: center !important;
+}
+.scroll-bar-margin {
+  margin-left: 1vw;
 }
 .create-post-images {
   margin-top: 2rem;
@@ -399,6 +426,7 @@ input[type="file"] {
 }
 .edit-post {
   width: 85vw;
+  backdrop-filter: blur(3px);
 }
 .close-edit {
   z-index: 101;
@@ -419,8 +447,8 @@ input[type="file"] {
   z-index: -1;
   border-radius: var(--radius);
   position: absolute;
-  opacity: 0.8;
-  filter: blur(12px);
+  opacity: 0.9;
+  filter: blur(10px);
 }
 .edit-post-icon {
   align-self: flex-start;
