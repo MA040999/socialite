@@ -6,7 +6,7 @@ import CreatePost from "./CreatePost";
 import Post from "./Post";
 function PostInner() {
   const { id } = useParams();
-  const post = useSelector((state) => state.posts).find(
+  const post = useSelector((state) => state.posts.posts).find(
     (data) => data._id === id
   );
 

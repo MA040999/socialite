@@ -5,17 +5,19 @@ import { BsFillTrashFill } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { API_BASE_URL } from "../common/common";
 import moment from "moment";
+import { useDispatch } from "react-redux";
+import { changeEditStatus } from "../redux/posts/postActions";
 // import { useHistory } from "react-router-dom";
 
 function Post(props) {
   // const history = useHistory();
+  const dispatch = useDispatch();
 
   const { isComment, onPress, content, createdAt, likeCount, images, id } =
     props;
 
-  const handleEditPost = (e, id) => {
-    e.stopPropagation();
-    console.log(`id`, id);
+  const handleEditPost = (id) => {
+    dispatch(changeEditStatus());
   };
 
   return (
@@ -34,7 +36,7 @@ function Post(props) {
           <div className="icons-container">
             <div className="icons-container-inner">
               <FiEdit
-                onClick={(e) => handleEditPost(e, id)}
+                onClick={() => handleEditPost(id)}
                 className="icon"
                 color="white"
               />

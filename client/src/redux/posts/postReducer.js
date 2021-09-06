@@ -1,12 +1,18 @@
-import { CREATE_POST, GET_POSTS } from "./postTypes";
+import { CREATE_POST, GET_POSTS, IS_EDIT_ACTIVE } from "./postTypes";
 
-const postReducer = (state = [], action) => {
+const initialState = {
+  posts: [], 
+  isEditActive: false
+}
+
+const postReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_POSTS:
-      return [...action.payload];
+      return {...state, posts: [...action.payload]};
     case CREATE_POST:
-      return [action.payload, ...state];
-
+      return {...state, posts: [action.payload, ...state.posts]};
+    case IS_EDIT_ACTIVE:
+      return {...state, isEditActive: !state.isEditActive}
     default:
       return state;
   }

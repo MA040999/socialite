@@ -258,17 +258,8 @@ input[type="file"] {
   display: flex;
   align-items: center;
 }
-.image-upload-container > label {
-  width: 30px;
-  height: 30px;
-  border-radius: 5px;
-  align-self: stretch;
-  margin-inline: clamp(1rem, 1.5vw, 2rem);
-  background-image: url("../assets/picture.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  cursor: pointer;
-  position: relative;
+.creator {
+  align-self: center !important;
 }
 .create-post-images {
   margin-top: 2rem;
@@ -341,6 +332,7 @@ input[type="file"] {
 }
 .post-body-container p {
   letter-spacing: 1px;
+  overflow-wrap: break-word;
 }
 .icons-container {
   display: flex;
@@ -386,13 +378,54 @@ input[type="file"] {
 .comment-maker {
   position: fixed;
   background: linear-gradient(to left, var(--color1), var(--color2));
-
   backdrop-filter: blur(20px);
   bottom: -4rem;
   left: 0.6rem;
   right: 0.6rem;
 }
 /* COMMENT STYLING END */
+
+/* EDIT POST STYLING START */
+.edit-post-container {
+  position: fixed;
+  top: 1%;
+  left: 7%;
+
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.edit-post {
+  width: 85vw;
+}
+.close-edit {
+  z-index: 101;
+  position: relative;
+  background: linear-gradient(to left, var(--color1), var(--color2));
+  border-radius: var(--radius);
+  color: white;
+  font-weight: bolder;
+  text-transform: uppercase;
+  padding: 0.5em 2em;
+  font-size: clamp(0.7rem, 1.4vw, 1.1rem);
+  cursor: pointer;
+}
+.close-edit::before {
+  background: inherit;
+  content: "";
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius);
+  position: absolute;
+  opacity: 0.8;
+  filter: blur(12px);
+}
+.edit-post-icon {
+  align-self: flex-start;
+}
+/* EDIT POST STYLING END */
 
 /* LOGIN STYLING START */
 .login-container {
@@ -596,10 +629,6 @@ input[type="file"] {
     width: 50px;
     height: 50px;
   }
-  .image-upload-container > label {
-    width: 23px;
-    height: 23px;
-  }
   .comment-maker {
     background: linear-gradient(
       to left,
@@ -639,10 +668,6 @@ input[type="file"] {
   }
   .like-comment-container {
     margin-left: 3.1rem;
-  }
-  .image-upload-container > label {
-    width: 20px;
-    height: 20px;
   }
   .image {
     width: 40px;

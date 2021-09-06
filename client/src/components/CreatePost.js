@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { RiSendPlaneFill } from "react-icons/ri";
+import { BiImageAdd } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { createPost } from "../redux/posts/postActions";
 
-function CreatePost({ isComment }) {
+function CreatePost({ isComment, isEditPost }) {
   const dispatch = useDispatch();
   const [imagesFileArray, setImagesFileArray] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
@@ -71,11 +72,13 @@ function CreatePost({ isComment }) {
 
   return (
     <div
-      className={`post-container ${isComment ? "comment-maker" : ""}`}
+      className={`post-container ${isComment ? "comment-maker" : ""} ${
+        isEditPost ? "edit-post" : ""
+      }`}
       style={{ marginBottom: "70px" }}
     >
       <div className="post-heading-container">
-        <div className="post-image">
+        <div className={`post-image  ${isEditPost ? "edit-post-icon" : ""}`}>
           <img src="/favicon.ico" alt="user" />
         </div>
         <TextareaAutosize
@@ -84,26 +87,39 @@ function CreatePost({ isComment }) {
           placeholder={
             isComment ? "Leave a comment..." : "What's on your mind?"
           }
+          maxRows={isEditPost ? 19 : undefined}
           value={postInput}
           onChange={(e) => setPostInput(e.target.value)}
           autoComplete="off"
         />
-        {isComment ? (
-          ""
-        ) : (
-          <div className="image-upload-container">
-            <label htmlFor="file-upload" className="custom-file-upload"></label>
-            <input
-              id="file-upload"
-              type="file"
-              accept="image/*"
-              multiple
-              name="imageFile"
-              onChange={(e) => handleSelectImage(e)}
-            />
-          </div>
-        )}
-        <RiSendPlaneFill className="icon" onClick={handleSubmit} />
+
+        <div className={`icons-container ${isEditPost ? "" : "creator"}`}>
+          {isComment ? (
+            ""
+          ) : (
+            <>
+              <label htmlFor="file-upload">
+                <BiImageAdd
+                  className={`icon ${isEditPost ? "edit-post-icon" : ""}`}
+                  color="white"
+                />
+              </label>
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                multiple
+                name="imageFile"
+                onChange={(e) => handleSelectImage(e)}
+              />
+            </>
+          )}
+          <RiSendPlaneFill
+            className={`icon ${isEditPost ? "edit-post-icon" : ""}`}
+            color="white"
+            onClick={handleSubmit}
+          />
+        </div>
       </div>
       {imageUrls.length > 0 && (
         <div className="post-images-container  create-post-images">
@@ -124,7 +140,7 @@ function CreatePost({ isComment }) {
       )}
 
       {/* <pre style={{ color: "black" }}>{JSON.stringify(imagesFileArray, null, 2)}</pre>
-      <pre style={{ color: "black" }}>{JSON.stringify(imageUrls, null, 2)}</pre> */}
+        <pre style={{ color: "black" }}>{JSON.stringify(imageUrls, null, 2)}</pre> */}
     </div>
   );
 }
