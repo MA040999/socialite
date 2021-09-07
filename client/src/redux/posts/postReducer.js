@@ -3,6 +3,7 @@ import {
   GET_POSTS,
   IS_EDIT_ACTIVE,
   SELECTED_POST,
+  UPDATE_POST,
 } from "./postTypes";
 
 const initialState = {
@@ -15,6 +16,13 @@ const postReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_POSTS:
       return { ...state, posts: [...action.payload] };
+    case UPDATE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
     case CREATE_POST:
       return { ...state, posts: [action.payload, ...state.posts] };
     case SELECTED_POST:

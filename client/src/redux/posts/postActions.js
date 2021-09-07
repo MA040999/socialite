@@ -3,6 +3,7 @@ import {
   GET_POSTS,
   IS_EDIT_ACTIVE,
   SELECTED_POST,
+  UPDATE_POST,
 } from "./postTypes";
 import app from "../../axiosConfig";
 
@@ -19,6 +20,15 @@ export const createPost = (formData) => async (dispatch) => {
   try {
     const post = await app.post("/posts/createPost/", formData);
     dispatch({ type: CREATE_POST, payload: post.data });
+  } catch (error) {
+    console.log(`error`, error);
+  }
+};
+
+export const updatePost = (formData, id) => async (dispatch) => {
+  try {
+    const post = await app.patch(`/posts/updatePost/${id}`, formData);
+    dispatch({ type: UPDATE_POST, payload: post.data });
   } catch (error) {
     console.log(`error`, error);
   }

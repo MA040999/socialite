@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { BiImageAdd } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost } from "../redux/posts/postActions";
+import { createPost, updatePost } from "../redux/posts/postActions";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import { API_BASE_URL } from "../common/common";
 
 function CreatePost({ isComment, isEditPost }) {
   const dispatch = useDispatch();
   const isEdit = useSelector((state) => state.posts.isEditActive);
   const selectedPost = useSelector((state) => state.posts.selectedPost);
+  const postData = useSelector((state) =>
+    state.posts.posts.find((post) => post._id === selectedPost)
+  );
 
   const [imagesFileArray, setImagesFileArray] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
@@ -35,8 +39,12 @@ function CreatePost({ isComment, isEditPost }) {
       });
       formData.append("content", postInput);
 
-      dispatch(createPost(formData));
-      clearInputs();
+      if (isEdit) {
+        dispatch(updatePost(formData, selectedPost));
+      } else {
+        dispatch(createPost(formData));
+        clearInputs();
+      }
     }
   };
 
@@ -75,7 +83,28 @@ function CreatePost({ isComment, isEditPost }) {
 
   useEffect(() => {
     if (isEdit) {
-      setPostInput("aaaaaa");
+      setPostInput(postData.content);
+      const files = [];
+      const promise = postData.images.map(async (image) => {
+        files.push(
+          await fetch(API_BASE_URL + image)
+            .then((r) => r.blob())
+            .then(
+              (blobFile) =>
+                new File([blobFile], image.substring(9), { type: "image/*" })
+            )
+        );
+      });
+
+      Promise.all(promise).then(() => {
+        const urls = [];
+        Array.from(files).map((file) => {
+          urls.push(URL.createObjectURL(file));
+          return null;
+        });
+        setImagesFileArray(Array.from(files));
+        setImageUrls(urls);
+      });
     }
   }, []);
 
@@ -112,7 +141,7 @@ function CreatePost({ isComment, isEditPost }) {
             ""
           ) : (
             <>
-              <label htmlFor="file-upload">
+              <label className="icon-label" htmlFor="file-upload">
                 <BiImageAdd
                   className={`icon ${isEditPost ? "edit-post-icon" : ""}`}
                   color="white"

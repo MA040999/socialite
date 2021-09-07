@@ -309,6 +309,11 @@ input[type="file"] {
   cursor: pointer;
   right: -20px;
 }
+.icon-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* CREATE_POST STYLING END */
 
 /* POST STYLING START */
