@@ -6,7 +6,10 @@ import { FiEdit } from "react-icons/fi";
 import { API_BASE_URL } from "../common/common";
 import moment from "moment";
 import { useDispatch } from "react-redux";
-import { changeEditStatus } from "../redux/posts/postActions";
+import {
+  changeEditStatus,
+  changeSelectedPost,
+} from "../redux/posts/postActions";
 // import { useHistory } from "react-router-dom";
 
 function Post(props) {
@@ -18,6 +21,7 @@ function Post(props) {
 
   const handleEditPost = (id) => {
     dispatch(changeEditStatus());
+    dispatch(changeSelectedPost(id));
   };
 
   return (

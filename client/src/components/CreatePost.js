@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { BiImageAdd } from "react-icons/bi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../redux/posts/postActions";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 function CreatePost({ isComment, isEditPost }) {
   const dispatch = useDispatch();
+  const isEdit = useSelector((state) => state.posts.isEditActive);
+  const selectedPost = useSelector((state) => state.posts.selectedPost);
+
   const [imagesFileArray, setImagesFileArray] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
   const [postInput, setPostInput] = useState("");
@@ -69,6 +72,12 @@ function CreatePost({ isComment, isEditPost }) {
       return newImages;
     });
   };
+
+  useEffect(() => {
+    if (isEdit) {
+      setPostInput("aaaaaa");
+    }
+  }, []);
 
   return (
     <div

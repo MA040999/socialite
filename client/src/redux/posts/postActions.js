@@ -1,4 +1,9 @@
-import { CREATE_POST, GET_POSTS, IS_EDIT_ACTIVE } from "./postTypes";
+import {
+  CREATE_POST,
+  GET_POSTS,
+  IS_EDIT_ACTIVE,
+  SELECTED_POST,
+} from "./postTypes";
 import app from "../../axiosConfig";
 
 export const getPosts = () => async (dispatch) => {
@@ -22,5 +27,12 @@ export const createPost = (formData) => async (dispatch) => {
 export const changeEditStatus = () => {
   return {
     type: IS_EDIT_ACTIVE,
-  }
-}
+  };
+};
+
+export const changeSelectedPost = (id) => {
+  return {
+    type: SELECTED_POST,
+    payload: id,
+  };
+};
