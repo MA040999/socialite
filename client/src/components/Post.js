@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
@@ -9,13 +9,16 @@ import { useDispatch } from "react-redux";
 import {
   changeEditStatus,
   changeSelectedPost,
+  deletePost,
+  dislikePost,
+  likePost,
 } from "../redux/posts/postActions";
 // import { useHistory } from "react-router-dom";
 
 function Post(props) {
   // const history = useHistory();
   const dispatch = useDispatch();
-  const [like, setLike] = useState(false)
+  const [like, setLike] = useState(false);
 
   const { isComment, onPress, content, createdAt, likeCount, images, id } =
     props;
@@ -26,9 +29,18 @@ function Post(props) {
   };
 
   const handleLikeClick = () => {
-    console.log(`id`, id)
-    setLike(!like)
-  }
+    if (like) {
+      dispatch(dislikePost(id));
+    } else {
+      dispatch(likePost(id));
+    }
+
+    setLike(!like);
+  };
+
+  const handleTrashClick = () => {
+    dispatch(deletePost(id));
+  };
 
   return (
     <div className={`post-container`}>
@@ -52,7 +64,11 @@ function Post(props) {
               />
             </div>
             <div className="icons-container-inner">
-              <BsFillTrashFill className="icon" color="white" />
+              <BsFillTrashFill
+                className="icon"
+                color="white"
+                onClick={handleTrashClick}
+              />
             </div>
           </div>
         )}
@@ -84,7 +100,19 @@ function Post(props) {
       ) : (
         <div className="icons-container like-comment-container">
           <div className="icons-container-inner">
-            <AiOutlineHeart className="icon" color="white" onClick={handleLikeClick} />
+            {like ? (
+              <AiFillHeart
+                className="icon"
+                color="white"
+                onClick={handleLikeClick}
+              />
+            ) : (
+              <AiOutlineHeart
+                className="icon"
+                color="white"
+                onClick={handleLikeClick}
+              />
+            )}
             <span>{likeCount}</span>
           </div>
           <div className="icons-container-inner">
