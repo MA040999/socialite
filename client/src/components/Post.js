@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { BsFillTrashFill } from "react-icons/bs";
@@ -15,6 +15,7 @@ import {
 function Post(props) {
   // const history = useHistory();
   const dispatch = useDispatch();
+  const [like, setLike] = useState(false)
 
   const { isComment, onPress, content, createdAt, likeCount, images, id } =
     props;
@@ -23,6 +24,11 @@ function Post(props) {
     dispatch(changeEditStatus());
     dispatch(changeSelectedPost(id));
   };
+
+  const handleLikeClick = () => {
+    console.log(`id`, id)
+    setLike(!like)
+  }
 
   return (
     <div className={`post-container`}>
@@ -78,7 +84,7 @@ function Post(props) {
       ) : (
         <div className="icons-container like-comment-container">
           <div className="icons-container-inner">
-            <AiOutlineHeart className="icon" color="white" />
+            <AiOutlineHeart className="icon" color="white" onClick={handleLikeClick} />
             <span>{likeCount}</span>
           </div>
           <div className="icons-container-inner">
