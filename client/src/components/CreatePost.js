@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { BiImageAdd } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost, updatePost } from "../redux/posts/postActions";
+import { changeEditStatus, createPost, updatePost } from "../redux/posts/postActions";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import { API_BASE_URL } from "../common/common";
 
@@ -41,6 +41,7 @@ function CreatePost({ isComment, isEditPost }) {
 
       if (isEdit) {
         dispatch(updatePost(formData, selectedPost));
+        dispatch(changeEditStatus())
       } else {
         dispatch(createPost(formData));
         clearInputs();

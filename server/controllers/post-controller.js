@@ -47,6 +47,40 @@ const getPosts = async function (req, res) {
   }
 };
 
-const updatePost = async function (req, res) {};
+const updatePost = async function (req, res) {
+  try {
+    const { id } = req.params
+
+    const uploadFolderPath = "/uploads/";
+
+    const content = req.body.content;
+    const images = req.files
+      ? Array.isArray(req.files.file)
+        ? req.files.file
+        : [req.files.file]
+      : null;
+    const imagePaths = [];
+
+    images
+      ? await images.forEach(function (image) {
+          
+          let imageUrl = uploadFolderPath + image.name;
+          let uploadPath = process.cwd() + imageUrl;
+          image.mv(uploadPath, function (err) {
+            if (err) return res.status(500).send(err);
+
+            console.log("File uploaded!");
+          });
+          imagePaths.push(imageUrl);
+        })
+      : "";
+
+    const updatedPost = await db.Posts.findByIdAndUpdate({_id: id}, {content, images: imagePaths}, {new: true})
+    
+    res.status(200).json(updatedPost)
+  } catch (error) {
+    res.status(409).json(error.message);
+  }
+};
 
 module.exports = { createPost, getPosts, updatePost };

@@ -27,8 +27,8 @@ export const createPost = (formData) => async (dispatch) => {
 
 export const updatePost = (formData, id) => async (dispatch) => {
   try {
-    const post = await app.patch(`/posts/updatePost/${id}`, formData);
-    dispatch({ type: UPDATE_POST, payload: post.data });
+    const updatedPost = await app.patch(`/posts/updatePost/${id}`, formData);
+    dispatch({ type: UPDATE_POST, payload: updatedPost.data });
   } catch (error) {
     console.log(`error`, error);
   }
