@@ -13,12 +13,14 @@ import { verifyAuth } from "./redux/auth/authActions";
 import PostInner from "./components/PostInner";
 import CreatePost from "./components/CreatePost";
 import { changeEditStatus } from "./redux/posts/postActions";
+import Confirmation from "./components/Confirmation";
 
 function App(props) {
   const dispatch = useDispatch();
   const { isAuth, verifyAuth } = props;
 
   const editStatus = useSelector((state) => state.posts.isEditActive);
+  const confirmationStatus = useSelector((state) => state.posts.isConfirmationActive);
 
   // const getInitialState = async () => {
   //   let bool;
@@ -75,6 +77,7 @@ function App(props) {
               opacity: "0.9",
             }}
           ></div>
+
           <div className="edit-post-container">
             <CreatePost isEditPost={true} />
             <div
@@ -84,6 +87,23 @@ function App(props) {
               Close
             </div>
           </div>
+        </>
+      ) : (
+        ""
+      )}
+      {confirmationStatus ? (
+        <>
+          <div
+            style={{
+              position: "fixed",
+              zIndex: "99",
+              width: "100%",
+              height: "100%",
+              backgroundColor: "black",
+              opacity: "0.9",
+            }}
+          ></div> 
+          <Confirmation/>
         </>
       ) : (
         ""

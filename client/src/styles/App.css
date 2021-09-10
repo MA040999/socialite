@@ -419,12 +419,68 @@ input[type="file"] {
 }
 /* COMMENT STYLING END */
 
+/* CONFIRMATION STYLING START */
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+.confirmation-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: var(--radius);
+  background-color: var(--transparent);
+  padding: 2em;
+  backdrop-filter: blur(3px);
+}
+.confirmation-text {
+  font-size: clamp(0.7rem, 1.4vw, 1.1rem);
+  color: white;
+  letter-spacing: 1px;
+  font-weight: bolder;
+  text-align: center;
+}
+.confirmation-button-container {
+  display: flex;
+  margin-top: 2em;
+  gap: 1.5em;
+}
+.confirmation-button {
+  background: linear-gradient(to left, var(--color1), var(--color2));
+  border-radius: var(--radius);
+  color: white;
+  font-weight: bolder;
+  text-transform: uppercase;
+  padding: 0.3em 1.5em;
+  font-size: clamp(0.7rem, 1.4vw, 1.1rem);
+  cursor: pointer;
+  position: relative;
+  border: none;
+}
+.confirmation-button::before {
+  background: inherit;
+  content: "";
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius);
+  position: absolute;
+  opacity: 0.9;
+  filter: blur(10px);
+}
+
+/* CONFIRMATION STYLING END */
+
 /* EDIT POST STYLING START */
 .edit-post-container {
   position: fixed;
   top: 1%;
   left: 7%;
-
   z-index: 100;
   display: flex;
   align-items: center;

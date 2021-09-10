@@ -2,6 +2,7 @@ import {
   CREATE_POST,
   DELETE_POST,
   GET_POSTS,
+  IS_CONFIRMATON_ACTIVE,
   IS_EDIT_ACTIVE,
   SELECTED_POST,
   UPDATE_POST,
@@ -65,6 +66,12 @@ export const dislikePost = (id) => async (dispatch) => {
 export const changeEditStatus = () => {
   return {
     type: IS_EDIT_ACTIVE,
+  };
+};
+
+export const changeConfirmationStatus = () => {
+  return {
+    type: IS_CONFIRMATON_ACTIVE,
   };
 };
 

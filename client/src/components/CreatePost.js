@@ -117,7 +117,7 @@ function CreatePost({ isComment, isEditPost }) {
       style={{ marginBottom: "70px" }}
     >
       <div className="post-heading-container">
-        <div className={`post-image  ${isEditPost ? "edit-post-icon" : ""}`}>
+        <div className={`post-image `}>
           <img src="/favicon.ico" alt="user" />
         </div>
         <TextareaAutosize
@@ -134,9 +134,7 @@ function CreatePost({ isComment, isEditPost }) {
         />
 
         <div
-          className={`icons-container scroll-bar-margin ${
-            isEditPost ? "" : "creator"
-          }`}
+          className={`icons-container scroll-bar-margin creator`}
         >
           {isComment ? (
             ""

@@ -7,6 +7,7 @@ import { API_BASE_URL } from "../common/common";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import {
+  changeConfirmationStatus,
   changeEditStatus,
   changeSelectedPost,
   deletePost,
@@ -39,7 +40,8 @@ function Post(props) {
   };
 
   const handleTrashClick = () => {
-    dispatch(deletePost(id));
+    dispatch(changeConfirmationStatus())
+    dispatch(changeSelectedPost(id))
   };
 
   return (

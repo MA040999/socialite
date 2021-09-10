@@ -2,6 +2,7 @@ import {
   CREATE_POST,
   DELETE_POST,
   GET_POSTS,
+  IS_CONFIRMATON_ACTIVE,
   IS_EDIT_ACTIVE,
   SELECTED_POST,
   UPDATE_POST,
@@ -11,6 +12,7 @@ const initialState = {
   posts: [],
   isEditActive: false,
   selectedPost: null,
+  isConfirmationActive: false,
 };
 
 const postReducer = (state = initialState, action) => {
@@ -36,6 +38,8 @@ const postReducer = (state = initialState, action) => {
         ...state,
         selectedPost: action.payload,
       };
+    case IS_CONFIRMATON_ACTIVE:
+      return { ...state, isConfirmationActive: !state.isConfirmationActive };
     case IS_EDIT_ACTIVE:
       return { ...state, isEditActive: !state.isEditActive };
     default:
