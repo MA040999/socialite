@@ -15,6 +15,7 @@ function PostInner() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getPosts());
+    // eslint-disable-next-line
   }, []);
   return (
     <div>

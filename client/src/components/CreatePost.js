@@ -107,6 +107,7 @@ function CreatePost({ isComment, isEditPost }) {
         setImageUrls(urls);
       });
     }
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -149,7 +150,7 @@ function CreatePost({ isComment, isEditPost }) {
               <input
                 id="file-upload"
                 type="file"
-                accept="image/*"
+                accept=".png, .jpg, .jpeg"
                 multiple
                 name="imageFile"
                 onChange={(e) => handleSelectImage(e)}

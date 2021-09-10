@@ -13,7 +13,7 @@ function Confirmation() {
         dispatch(deletePost(selectedPost));
         dispatch(changeConfirmationStatus())
       };
-
+     
     return (
         <div className="confirmation-container">
             <p className='confirmation-text'>Are you sure you want to delete this post?</p>

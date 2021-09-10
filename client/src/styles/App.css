@@ -21,6 +21,10 @@
 body {
   overflow: overlay;
 }
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
 
 /*SCROLL BAR STYLING START*/
 html::-webkit-scrollbar,
@@ -420,10 +424,6 @@ input[type="file"] {
 /* COMMENT STYLING END */
 
 /* CONFIRMATION STYLING START */
-.stop-scrolling {
-  height: 100%;
-  overflow: hidden;
-}
 .confirmation-container {
   position: fixed;
   top: 50%;

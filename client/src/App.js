@@ -58,6 +58,15 @@ function App(props) {
 
   //   return bool;
   // };
+  useEffect(() => {
+    if(editStatus || confirmationStatus){
+      document.body.className = 'stop-scrolling'
+    }
+    else{
+      document.body.className = ''
+    }
+    
+}, [confirmationStatus, editStatus])
 
   useEffect(() => {
     verifyAuth();

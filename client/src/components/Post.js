@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { BsFillTrashFill } from "react-icons/bs";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiHeart } from "react-icons/fi";
+import { FaHeart } from "react-icons/fa";
 import { API_BASE_URL } from "../common/common";
 import moment from "moment";
 import { useDispatch } from "react-redux";
@@ -10,7 +10,6 @@ import {
   changeConfirmationStatus,
   changeEditStatus,
   changeSelectedPost,
-  deletePost,
   dislikePost,
   likePost,
 } from "../redux/posts/postActions";
@@ -103,13 +102,13 @@ function Post(props) {
         <div className="icons-container like-comment-container">
           <div className="icons-container-inner">
             {like ? (
-              <AiFillHeart
+              <FaHeart
                 className="icon"
                 color="white"
                 onClick={handleLikeClick}
               />
             ) : (
-              <AiOutlineHeart
+              <FiHeart
                 className="icon"
                 color="white"
                 onClick={handleLikeClick}
