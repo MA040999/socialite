@@ -29,7 +29,7 @@ export const createPost = (formData) => async (dispatch) => {
 
 export const updatePost = (formData, id) => async (dispatch) => {
   try {
-    const updatedPost = await app.patch(`/posts/updatePost/${id}`, formData);
+    const updatedPost = await app.put(`/posts/updatePost/${id}`, formData);
     dispatch({ type: UPDATE_POST, payload: updatedPost.data });
   } catch (error) {
     console.log(`error`, error);
@@ -47,7 +47,7 @@ export const deletePost = (id) => async (dispatch) => {
 
 export const likePost = (id) => async (dispatch) => {
   try {
-    const likedPost = await app.patch(`/posts/likePost/${id}`);
+    const likedPost = await app.put(`/posts/likePost/${id}`);
     dispatch({ type: UPDATE_POST, payload: likedPost.data });
   } catch (error) {
     console.log(`error`, error);
@@ -56,7 +56,7 @@ export const likePost = (id) => async (dispatch) => {
 
 export const dislikePost = (id) => async (dispatch) => {
   try {
-    const dislikedPost = await app.patch(`/posts/dislikePost/${id}`);
+    const dislikedPost = await app.put(`/posts/dislikePost/${id}`);
     dispatch({ type: UPDATE_POST, payload: dislikedPost.data });
   } catch (error) {
     console.log(`error`, error);
