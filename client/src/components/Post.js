@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BiCommentDetail } from "react-icons/bi";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FiEdit, FiHeart } from "react-icons/fi";
@@ -10,7 +10,6 @@ import {
   changeConfirmationStatus,
   changeEditStatus,
   changeSelectedPost,
-  dislikePost,
   likePost,
 } from "../redux/posts/postActions";
 // import { useHistory } from "react-router-dom";
@@ -18,10 +17,22 @@ import {
 function Post(props) {
   // const history = useHistory();
   const dispatch = useDispatch();
-  const [like, setLike] = useState(false);
 
-  const { isComment, onPress, content, createdAt, likeCount, images, id } =
-    props;
+  const {
+    isComment,
+    onPress,
+    content,
+    createdAt,
+    creator,
+    displayImage,
+    name,
+    likeCount,
+    images,
+    id,
+    user,
+  } = props;
+
+  const isLiked = likeCount.includes(user?.id);
 
   const handleEditPost = (id) => {
     dispatch(changeEditStatus());
@@ -29,31 +40,29 @@ function Post(props) {
   };
 
   const handleLikeClick = () => {
-    if (like) {
-      dispatch(dislikePost(id));
-    } else {
-      dispatch(likePost(id));
-    }
-
-    setLike(!like);
+    dispatch(likePost(id));
   };
 
   const handleTrashClick = () => {
-    dispatch(changeConfirmationStatus())
-    dispatch(changeSelectedPost(id))
+    dispatch(changeConfirmationStatus());
+    dispatch(changeSelectedPost(id));
   };
 
   return (
     <div className={`post-container`}>
       <div className="post-heading-container">
         <div className="post-image">
-          <img src="/favicon.ico" alt="user" />
+          {displayImage ? (
+            <img src={API_BASE_URL + displayImage} alt="user" />
+          ) : (
+            <img src="/profile-icon.png" alt="user" />
+          )}
         </div>
         <div className="post-username">
-          <h3 className="post-name">Muhammed Ahmed</h3>
+          <h3 className="post-name">{name}</h3>
           <span className="post-duration">{moment(createdAt).fromNow()}</span>
         </div>
-        {isComment ? (
+        {isComment || user?.id !== creator ? (
           ""
         ) : (
           <div className="icons-container">
@@ -101,7 +110,7 @@ function Post(props) {
       ) : (
         <div className="icons-container like-comment-container">
           <div className="icons-container-inner">
-            {like ? (
+            {isLiked ? (
               <FaHeart
                 className="icon"
                 color="white"
@@ -114,7 +123,7 @@ function Post(props) {
                 onClick={handleLikeClick}
               />
             )}
-            <span>{likeCount}</span>
+            <span>{likeCount.length}</span>
           </div>
           <div className="icons-container-inner">
             <BiCommentDetail className="icon" color="white" onClick={onPress} />

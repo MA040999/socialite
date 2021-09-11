@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 // import { GiHamburgerMenu, GiReactor } from "react-icons/gi";
-import { FaUserCircle } from "react-icons/fa";
 import { connect } from "react-redux";
 import { logout } from "../redux/auth/authActions";
 import { Link, useHistory } from "react-router-dom";
 import SearchBar from "./SearchBar";
+import { API_BASE_URL } from "../common/common";
 
 function NavBar(props) {
   let menuRef = useRef();
-  const { isAuth, user, logout } = props;
+  const { user, logout } = props;
 
   const history = useHistory();
 
@@ -57,11 +57,15 @@ function NavBar(props) {
           )}
         </div>
         <ul className={isOpen ? "active" : ""}>
-          {isAuth ? (
+          {user ? (
             <div className="authenticated">
               <li>
                 <div style={{ fontSize: "2rem" }} className="avatar">
-                  <FaUserCircle />
+                  {user?.displayImage ? (
+                    <img src={API_BASE_URL + user?.displayImage} alt="user" />
+                  ) : (
+                    <img src="/profile-icon.png" alt="user" />
+                  )}
                 </div>
                 {/* <img className="avatar" src="logo192.png" alt="" /> */}
                 {/* <div className="avatar">{currentUser.fullname.charAt(0)}</div> */}
@@ -92,7 +96,7 @@ function NavBar(props) {
             </li>
           )}
 
-          {isAuth ? (
+          {user ? (
             ""
           ) : (
             <li>
@@ -109,9 +113,8 @@ function NavBar(props) {
 
 const mapStateToProps = (state) => {
   return {
-    isAuth: state.isAuth,
-    user: state.user,
-    err: state.err,
+    user: state.auth.user,
+    err: state.auth.err,
   };
 };
 

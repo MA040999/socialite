@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import CreatePost from "./CreatePost";
 import Posts from "./Posts";
 
@@ -7,9 +8,11 @@ function HomePage() {
     window.scrollTo(0, 0);
   }, []);
 
+  const user = useSelector((state) => state.auth.user);
+
   return (
     <div>
-      <CreatePost />
+      {user !== null && <CreatePost />}
       <Posts />
     </div>
   );

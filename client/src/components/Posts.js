@@ -9,6 +9,7 @@ function Posts() {
 
   const history = useHistory();
   const posts = useSelector((state) => state.posts.posts);
+  const user = useSelector((state) => state.auth.user);
 
   function handleClick(id) {
     history.push(`/post/${id}`);
@@ -34,6 +35,10 @@ function Posts() {
                 handleClick(post._id);
               }}
               id={post._id}
+              user={user}
+              creator={post.creator}
+              name={post.name}
+              displayImage={post.displayImage}
               content={post.content}
               createdAt={post.createdAt}
               likeCount={post.likeCount}

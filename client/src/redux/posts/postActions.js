@@ -2,7 +2,7 @@ import {
   CREATE_POST,
   DELETE_POST,
   GET_POSTS,
-  IS_CONFIRMATON_ACTIVE,
+  IS_CONFIRMATION_ACTIVE,
   IS_EDIT_ACTIVE,
   SELECTED_POST,
   UPDATE_POST,
@@ -11,7 +11,7 @@ import app from "../../axiosConfig";
 
 export const getPosts = () => async (dispatch) => {
   try {
-    const posts = await app.get("/posts/getPosts/");
+    const posts = await app.get("/posts/get-posts/");
     dispatch({ type: GET_POSTS, payload: posts.data });
   } catch (error) {
     console.log(`error`, error);
@@ -20,7 +20,7 @@ export const getPosts = () => async (dispatch) => {
 
 export const createPost = (formData) => async (dispatch) => {
   try {
-    const post = await app.post("/posts/createPost/", formData);
+    const post = await app.post("/posts/create-post/", formData);
     dispatch({ type: CREATE_POST, payload: post.data });
   } catch (error) {
     console.log(`error`, error);
@@ -29,7 +29,7 @@ export const createPost = (formData) => async (dispatch) => {
 
 export const updatePost = (formData, id) => async (dispatch) => {
   try {
-    const updatedPost = await app.put(`/posts/updatePost/${id}`, formData);
+    const updatedPost = await app.put(`/posts/update-post/${id}`, formData);
     dispatch({ type: UPDATE_POST, payload: updatedPost.data });
   } catch (error) {
     console.log(`error`, error);
@@ -38,7 +38,7 @@ export const updatePost = (formData, id) => async (dispatch) => {
 
 export const deletePost = (id) => async (dispatch) => {
   try {
-    await app.delete(`/posts/deletePost/${id}`);
+    await app.delete(`/posts/delete-post/${id}`);
     dispatch({ type: DELETE_POST, payload: id });
   } catch (error) {
     console.log(`error`, error);
@@ -47,17 +47,8 @@ export const deletePost = (id) => async (dispatch) => {
 
 export const likePost = (id) => async (dispatch) => {
   try {
-    const likedPost = await app.put(`/posts/likePost/${id}`);
+    const likedPost = await app.put(`/posts/like-post/${id}`);
     dispatch({ type: UPDATE_POST, payload: likedPost.data });
-  } catch (error) {
-    console.log(`error`, error);
-  }
-};
-
-export const dislikePost = (id) => async (dispatch) => {
-  try {
-    const dislikedPost = await app.put(`/posts/dislikePost/${id}`);
-    dispatch({ type: UPDATE_POST, payload: dislikedPost.data });
   } catch (error) {
     console.log(`error`, error);
   }
@@ -71,7 +62,7 @@ export const changeEditStatus = () => {
 
 export const changeConfirmationStatus = () => {
   return {
-    type: IS_CONFIRMATON_ACTIVE,
+    type: IS_CONFIRMATION_ACTIVE,
   };
 };
 

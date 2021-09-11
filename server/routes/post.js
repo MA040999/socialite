@@ -1,11 +1,12 @@
 const router = require("express").Router();
 const postController = require("../controllers/post-controller");
 
-router.post("/createPost", postController.createPost);
-router.get("/getPosts", postController.getPosts);
-router.put("/updatePost/:id", postController.updatePost);
-router.put("/likePost/:id", postController.likePost);
-router.put("/dislikePost/:id", postController.dislikePost);
-router.delete("/deletePost/:id", postController.deletePost);
+const { auth } = require("../middleware/authMiddleware");
+
+router.get("/get-posts", postController.getPosts);
+router.post("/create-post", auth, postController.createPost);
+router.put("/update-post/:id", auth, postController.updatePost);
+router.put("/like-post/:id", auth, postController.likePost);
+router.delete("/delete-post/:id", auth, postController.deletePost);
 
 module.exports = router;

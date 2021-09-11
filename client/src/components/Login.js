@@ -34,11 +34,7 @@ function Login(props) {
   };
 
   return (
-    <form
-      className="login-container"
-      onSubmit={(e) => handleSubmit(e)}
-      autoComplete="off"
-    >
+    <form className="login-container" onSubmit={(e) => handleSubmit(e)}>
       {err ? <div className="err">{err}</div> : ""}
       <h2>LOGIN</h2>
       <div className="login-input-container">

@@ -2,17 +2,10 @@ import {
   AUTH,
   LOGOUT,
   AUTH_ERROR,
-  VERIFY_AUTH_SUCCESS,
-  VERIFY_AUTH_FAIL,
+  // VERIFY_AUTH_SUCCESS,
+  // VERIFY_AUTH_FAIL,
 } from "./authTypes";
 import app from "../../axiosConfig";
-
-const auth = (data) => {
-  return {
-    type: AUTH,
-    payload: data,
-  };
-};
 
 export const authError = (error) => {
   return {
@@ -21,40 +14,40 @@ export const authError = (error) => {
   };
 };
 
-export const login = ({ username, password }, history) => {
+export const login = ({ email, password }, history) => {
   return async (dispatch) => {
     try {
-      const user = await app.post("/login/", { username, password });
-      dispatch(auth({ isAuth: true, user: user.data }));
-      history.push("/dashboard");
+      const user = await app.post("/auth/login/", { email, password });
+      dispatch({ type: AUTH, payload: user?.data });
+      history.push("/");
     } catch (error) {
       dispatch(authError(error.response.data.message));
     }
   };
 };
 
-export const verifyAuth = () => {
+// export const verifyAuth = () => {
+//   return async (dispatch) => {
+//     try {
+//       const user = await app.get("/auth/verify-auth");
+
+//       dispatch({ type: VERIFY_AUTH_SUCCESS, payload: user?.data });
+//     } catch {
+//       dispatch({ type: VERIFY_AUTH_FAIL });
+//     }
+//   };
+// };
+
+export const signup = ({ fullname, email, password }, history) => {
   return async (dispatch) => {
     try {
-      const user = await app.get("/auth/");
-
-      dispatch({ type: VERIFY_AUTH_SUCCESS, isAuth: true, payload: user.data });
-    } catch {
-      dispatch({ type: VERIFY_AUTH_FAIL });
-    }
-  };
-};
-
-export const signup = ({ fullname, username, password }, history) => {
-  return async (dispatch) => {
-    try {
-      const user = await app.post("/signup", {
+      const user = await app.post("/auth/signup", {
         fullname,
-        username,
+        email,
         password,
       });
-      dispatch(auth({ isAuth: true, user: user.data }));
-      history.push("/dashboard");
+      dispatch({ type: AUTH, payload: user?.data });
+      history.push("/");
     } catch (error) {
       dispatch(authError(error.response.data.message));
     }
@@ -63,8 +56,8 @@ export const signup = ({ fullname, username, password }, history) => {
 
 export const logout = (history) => {
   return async (dispatch) => {
-    await app.get("/logout/");
+    await app.get("/auth/logout/");
     dispatch({ type: LOGOUT });
-    history.push("/login");
+    history.push("/");
   };
 };

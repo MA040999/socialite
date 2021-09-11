@@ -1,21 +1,22 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const auth = (req, res, next) => {
-  const token = req.cookies.jwt;
+  try {
+    const token = req.cookies.jwt;
 
-  if (token) {
-    jwt.verify(token, "jwt_token_secret", (err, decodedToken) => {
-      if (err) {
-        res.status(403);
-      } else {
-        req.fullname = decodedToken.fullname;
-        req.userId = decodedToken.id;
-      }
-    });
-  } else {
-    res.status(401);
+    if (token) {
+      const decodedTokenData = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+      req.userId = decodedTokenData?.id;
+      req.fullname = decodedTokenData?.fullname;
+      req.displayImage = decodedTokenData?.displayImage;
+    }
+
+    next();
+  } catch (error) {
+    console.log(error);
   }
-  next();
 };
 
 module.exports = { auth };

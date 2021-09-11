@@ -4,6 +4,8 @@ const db = require("../models");
 const Posts = require("../models/Posts");
 
 const createPost = async function (req, res) {
+  if (!req.userId) return res.status(400).json({ message: "Unauthenticated" });
+
   const uploadFolderPath = "/uploads/";
 
   const content = req.body.content;
@@ -29,7 +31,13 @@ const createPost = async function (req, res) {
       })
     : "";
 
-  const post = new Posts({ content, images: imagePaths });
+  const post = new Posts({
+    content,
+    images: imagePaths,
+    creator: req.userId,
+    name: req.fullname,
+    displayImage: req.displayImage,
+  });
 
   try {
     await post.save();
@@ -50,6 +58,9 @@ const getPosts = async function (req, res) {
 
 const updatePost = async function (req, res) {
   try {
+    if (!req.userId)
+      return res.status(400).json({ message: "Unauthenticated" });
+
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id))
@@ -92,32 +103,27 @@ const updatePost = async function (req, res) {
 
 const likePost = async function (req, res) {
   try {
-    const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id))
-      return res.status(404).send("No post with this id");
+    if (!req.userId)
+      return res.status(400).json({ message: "Unauthenticated" });
 
-    const updatedPost = await db.Posts.findByIdAndUpdate(
-      id,
-      { $inc: { likeCount: 1 } },
-      { new: true }
-    );
-
-    res.status(200).json(updatedPost);
-  } catch (error) {
-    res.status(409).json(error);
-  }
-};
-
-const dislikePost = async function (req, res) {
-  try {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send("No post with this id");
 
+    const post = await db.Posts.findById(id);
+
+    const index = post.likeCount.findIndex((id) => id === req.userId);
+
+    if (index === -1) {
+      post.likeCount.push(req.userId);
+    } else {
+      post.likeCount.splice(index, 1);
+    }
+
     const updatedPost = await db.Posts.findByIdAndUpdate(
       id,
-      { $inc: { likeCount: -1 } },
+      { likeCount: post.likeCount },
       { new: true }
     );
 
@@ -129,6 +135,9 @@ const dislikePost = async function (req, res) {
 
 const deletePost = async function (req, res) {
   try {
+    if (!req.userId)
+      return res.status(400).json({ message: "Unauthenticated" });
+
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id))
@@ -147,6 +156,5 @@ module.exports = {
   getPosts,
   updatePost,
   likePost,
-  dislikePost,
   deletePost,
 };

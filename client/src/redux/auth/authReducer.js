@@ -2,12 +2,11 @@ import {
   AUTH,
   AUTH_ERROR,
   LOGOUT,
-  VERIFY_AUTH_SUCCESS,
-  VERIFY_AUTH_FAIL,
+  // VERIFY_AUTH_SUCCESS,
+  // VERIFY_AUTH_FAIL,
 } from "./authTypes";
 
 const intitalState = {
-  isAuth: false,
   user: null,
   err: "",
 };
@@ -17,13 +16,12 @@ const authReducer = (state = intitalState, action) => {
     case AUTH:
       return {
         ...state,
-        ...action.payload,
+        user: action.payload,
         err: "",
       };
     case LOGOUT:
       return {
         ...state,
-        isAuth: false,
         user: null,
         err: "",
       };
@@ -32,20 +30,18 @@ const authReducer = (state = intitalState, action) => {
         ...state,
         err: action.payload,
       };
-    case VERIFY_AUTH_FAIL:
-      return {
-        ...state,
-        isAuth: false,
-        user: null,
-        err: "",
-      };
-    case VERIFY_AUTH_SUCCESS:
-      return {
-        ...state,
-        isAuth: action.isAuth,
-        user: action.payload,
-        err: "",
-      };
+    // case VERIFY_AUTH_FAIL:
+    //   return {
+    //     ...state,
+    //     user: null,
+    //     err: "",
+    //   };
+    // case VERIFY_AUTH_SUCCESS:
+    //   return {
+    //     ...state,
+    //     user: action.payload,
+    //     err: "",
+    //   };
     default:
       return state;
   }

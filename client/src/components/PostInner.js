@@ -11,6 +11,7 @@ function PostInner() {
   const post = useSelector((state) => state.posts.posts).find(
     (data) => data._id === id
   );
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,7 +24,11 @@ function PostInner() {
         <Post
           id={id}
           content={post.content}
+          creator={post.creator}
+          name={post.name}
+          displayImage={post.displayImage}
           createdAt={post.createdAt}
+          user={user}
           likeCount={post.likeCount}
           images={post.images}
         />
@@ -31,14 +36,18 @@ function PostInner() {
         ""
       )}
 
-      <div className="comments-container">
-        {/* <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment /> */}
-      </div>
-      <CreatePost isComment={true} />
+      {user && (
+        <>
+          <div className="comments-container">
+            {/* <Comment />
+            <Comment />
+            <Comment />
+            <Comment />
+            <Comment /> */}
+          </div>
+          <CreatePost isComment={true} />
+        </>
+      )}
     </div>
   );
 }

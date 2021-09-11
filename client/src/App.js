@@ -9,7 +9,7 @@ import NavBar from "./components/NavBar";
 // import Dashboard from "./components/Dashboard";
 // import ProtectedRoute from "./components/ProtectedRoute";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { verifyAuth } from "./redux/auth/authActions";
+// import { verifyAuth } from "./redux/auth/authActions";
 import PostInner from "./components/PostInner";
 import CreatePost from "./components/CreatePost";
 import { changeEditStatus } from "./redux/posts/postActions";
@@ -17,10 +17,12 @@ import Confirmation from "./components/Confirmation";
 
 function App(props) {
   const dispatch = useDispatch();
-  const { isAuth, verifyAuth } = props;
+  const { user } = props;
 
   const editStatus = useSelector((state) => state.posts.isEditActive);
-  const confirmationStatus = useSelector((state) => state.posts.isConfirmationActive);
+  const confirmationStatus = useSelector(
+    (state) => state.posts.isConfirmationActive
+  );
 
   // const getInitialState = async () => {
   //   let bool;
@@ -59,18 +61,16 @@ function App(props) {
   //   return bool;
   // };
   useEffect(() => {
-    if(editStatus || confirmationStatus){
-      document.body.className = 'stop-scrolling'
+    if (editStatus || confirmationStatus) {
+      document.body.className = "stop-scrolling";
+    } else {
+      document.body.className = "";
     }
-    else{
-      document.body.className = ''
-    }
-    
-}, [confirmationStatus, editStatus])
+  }, [confirmationStatus, editStatus]);
 
-  useEffect(() => {
-    verifyAuth();
-  }, [verifyAuth]);
+  // useEffect(() => {
+  //   verifyAuth();
+  // }, [verifyAuth]);
 
   return (
     <>
@@ -111,8 +111,8 @@ function App(props) {
               backgroundColor: "black",
               opacity: "0.9",
             }}
-          ></div> 
-          <Confirmation/>
+          ></div>
+          <Confirmation />
         </>
       ) : (
         ""
@@ -121,11 +121,11 @@ function App(props) {
         <NavBar />
         <Switch>
           <Route path="/" exact component={HomePage} />
-          {isAuth === false && (
+          {user === null && (
             <Route path="/login" exact render={() => <Login />} />
           )}
 
-          {isAuth === false && (
+          {user === null && (
             <Route path="/signup" exact render={() => <Signup />} />
           )}
           <Route path="/post/:id" component={PostInner} />
@@ -133,7 +133,7 @@ function App(props) {
           {/* <ProtectedRoute
           path="/dashboard"
           component={Dashboard}
-          isAuthenticated={isAuth}
+          isAuthenticated={user}
         /> */}
           {/* {isAuthenticated && (
             <Route path="/dashboard" exact component={Dashboard} />
@@ -142,7 +142,7 @@ function App(props) {
           <Redirect to="/" />
         </Switch>
 
-        {/* <pre>{JSON.stringify(isAuth, null, 2)}</pre> */}
+        {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
       </div>
     </>
   );
@@ -150,14 +150,14 @@ function App(props) {
 
 const mapStateToProps = (state) => {
   return {
-    isAuth: state.auth.isAuth,
+    user: state.auth.user,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    verifyAuth: () => dispatch(verifyAuth()),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     verifyAuth: () => dispatch(verifyAuth()),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

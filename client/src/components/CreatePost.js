@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { BiImageAdd } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { changeEditStatus, createPost, updatePost } from "../redux/posts/postActions";
+import {
+  changeEditStatus,
+  createPost,
+  updatePost,
+} from "../redux/posts/postActions";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import { API_BASE_URL } from "../common/common";
 
@@ -13,6 +17,7 @@ function CreatePost({ isComment, isEditPost }) {
   const postData = useSelector((state) =>
     state.posts.posts.find((post) => post._id === selectedPost)
   );
+  const user = useSelector((state) => state.auth.user);
 
   const [imagesFileArray, setImagesFileArray] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
@@ -41,7 +46,7 @@ function CreatePost({ isComment, isEditPost }) {
 
       if (isEdit) {
         dispatch(updatePost(formData, selectedPost));
-        dispatch(changeEditStatus())
+        dispatch(changeEditStatus());
       } else {
         dispatch(createPost(formData));
         clearInputs();
@@ -118,8 +123,12 @@ function CreatePost({ isComment, isEditPost }) {
       style={{ marginBottom: "70px" }}
     >
       <div className="post-heading-container">
-        <div className={`post-image `}>
-          <img src="/favicon.ico" alt="user" />
+        <div className={`post-image`}>
+          {user?.displayImage ? (
+            <img src={API_BASE_URL + user?.displayImage} alt="user" />
+          ) : (
+            <img src="/profile-icon.png" alt="user" />
+          )}
         </div>
         <TextareaAutosize
           name="postInput"
@@ -134,9 +143,7 @@ function CreatePost({ isComment, isEditPost }) {
           autoComplete="off"
         />
 
-        <div
-          className={`icons-container scroll-bar-margin creator`}
-        >
+        <div className={`icons-container scroll-bar-margin creator`}>
           {isComment ? (
             ""
           ) : (
