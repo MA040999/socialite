@@ -21,7 +21,7 @@ const authenticateUser = async function (req, res) {
       },
       process.env.JWT_SECRET_KEY,
       {
-        expiresIn: 60 * 60 * 6,
+        expiresIn: 60 * 60 * 4,
       }
     );
 
@@ -39,17 +39,15 @@ const authenticateUser = async function (req, res) {
       httpOnly: true,
       sameSite: process.env.NODE_ENV === "production" ? "none" : true,
       secure: true,
-      maxAge: 1000 * 60 * 60 * 5,
+      maxAge: 1000 * 60 * 60 * 4,
       // secure: process.env.NODE_ENV === "production" ? true : false,
     });
 
-    res
-      .status(200)
-      .json({
-        id: user._id,
-        fullname: user.fullname,
-        displayImage: user.displayImage,
-      });
+    res.status(200).json({
+      id: user._id,
+      fullname: user.fullname,
+      displayImage: user.displayImage,
+    });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong!" });
   }
@@ -75,14 +73,14 @@ const createUser = async (req, res) => {
         },
         process.env.JWT_SECRET_KEY,
         {
-          expiresIn: 60 * 60 * 6,
+          expiresIn: 60 * 60 * 4,
         }
       );
       res.cookie("jwt", token, {
         httpOnly: true,
         sameSite: process.env.NODE_ENV === "production" ? "none" : true,
         secure: true,
-        maxAge: 1000 * 60 * 60 * 5,
+        maxAge: 1000 * 60 * 60 * 4,
       });
       res.status(200).json({
         id: result._id,
@@ -95,13 +93,19 @@ const createUser = async (req, res) => {
   }
 };
 
-// const verifyAuth = (req, res) => {
-//   res.json({ id: req.userId, fullname: req.fullname });
-// };
+const verifyAuth = (req, res) => {
+  if (!req.userId) return res.status(400).json({ message: "Unauthorized" });
+
+  return res.status(200).json({
+    id: req.userId,
+    fullname: req.fullname,
+    displayImage: req.displayImage,
+  });
+};
 
 const logout = (req, res) => {
   res.clearCookie("jwt");
   res.sendStatus(200);
 };
 
-module.exports = { authenticateUser, logout, createUser };
+module.exports = { authenticateUser, logout, createUser, verifyAuth };

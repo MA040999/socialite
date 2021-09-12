@@ -9,7 +9,7 @@ import NavBar from "./components/NavBar";
 // import Dashboard from "./components/Dashboard";
 // import ProtectedRoute from "./components/ProtectedRoute";
 import { connect, useDispatch, useSelector } from "react-redux";
-// import { verifyAuth } from "./redux/auth/authActions";
+import { verifyAuth } from "./redux/auth/authActions";
 import PostInner from "./components/PostInner";
 import CreatePost from "./components/CreatePost";
 import { changeEditStatus } from "./redux/posts/postActions";
@@ -17,49 +17,17 @@ import Confirmation from "./components/Confirmation";
 
 function App(props) {
   const dispatch = useDispatch();
-  const { user } = props;
+  const { user, verifyAuth } = props;
 
   const editStatus = useSelector((state) => state.posts.isEditActive);
   const confirmationStatus = useSelector(
     (state) => state.posts.isConfirmationActive
   );
 
-  // const getInitialState = async () => {
-  //   let bool;
-  //   await axios
-  //     .get(`/auth/`)
-  //     .then((res) => {
-  //       bool = true;
-  //     })
-  //     .catch((err) => {
-  //       bool = false;
-  //     });
-  //   console.log("bool1 :>> ", bool);
-  //   return bool;
-  // }
-  // const [isAuthenticated, setIsAuthenticated] = useState();
-  // const [currentUser, setCurrentUser] = useState({});
+  useEffect(() => {
+    verifyAuth();
+  }, [verifyAuth]);
 
-  // const fetchData = async () => {
-  //   const result = await auth();
-
-  //   setIsAuthenticated(result);
-  // };
-
-  // const auth = async () => {
-  //   let bool;
-  //   await axios
-  //     .get(`/auth/`)
-  //     .then((res) => {
-  //       setCurrentUser(res.data);
-  //       bool = true;
-  //     })
-  //     .catch(() => {
-  //       bool = false;
-  //     });
-
-  //   return bool;
-  // };
   useEffect(() => {
     if (editStatus || confirmationStatus) {
       document.body.className = "stop-scrolling";
@@ -67,10 +35,6 @@ function App(props) {
       document.body.className = "";
     }
   }, [confirmationStatus, editStatus]);
-
-  // useEffect(() => {
-  //   verifyAuth();
-  // }, [verifyAuth]);
 
   return (
     <>
@@ -130,15 +94,6 @@ function App(props) {
           )}
           <Route path="/post/:id" component={PostInner} />
 
-          {/* <ProtectedRoute
-          path="/dashboard"
-          component={Dashboard}
-          isAuthenticated={user}
-        /> */}
-          {/* {isAuthenticated && (
-            <Route path="/dashboard" exact component={Dashboard} />
-          )} */}
-          {/* <Redirect to="/login" from="/dashboard" /> */}
           <Redirect to="/" />
         </Switch>
 
@@ -154,10 +109,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     verifyAuth: () => dispatch(verifyAuth()),
-//   };
-// };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    verifyAuth: () => dispatch(verifyAuth()),
+  };
+};
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

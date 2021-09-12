@@ -1,10 +1,4 @@
-import {
-  AUTH,
-  AUTH_ERROR,
-  LOGOUT,
-  // VERIFY_AUTH_SUCCESS,
-  // VERIFY_AUTH_FAIL,
-} from "./authTypes";
+import { AUTH, AUTH_ERROR, LOGOUT } from "./authTypes";
 
 const intitalState = {
   user: null,
@@ -30,18 +24,6 @@ const authReducer = (state = intitalState, action) => {
         ...state,
         err: action.payload,
       };
-    // case VERIFY_AUTH_FAIL:
-    //   return {
-    //     ...state,
-    //     user: null,
-    //     err: "",
-    //   };
-    // case VERIFY_AUTH_SUCCESS:
-    //   return {
-    //     ...state,
-    //     user: action.payload,
-    //     err: "",
-    //   };
     default:
       return state;
   }

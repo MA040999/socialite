@@ -14,9 +14,6 @@ function NavBar(props) {
 
   const handleClick = () => {
     logout(history);
-    // await axios.get("/logout/");
-    // setIsAuthenticated(false);
-    // history.push("/login");
   };
 
   useEffect(() => {
