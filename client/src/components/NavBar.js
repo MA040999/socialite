@@ -61,7 +61,7 @@ function NavBar(props) {
                   {user?.displayImage ? (
                     <img src={API_BASE_URL + user?.displayImage} alt="user" />
                   ) : (
-                    <img src="/profile-icon.png" alt="user" />
+                    <img src="/user-circle.svg" alt="user" />
                   )}
                 </div>
                 {/* <img className="avatar" src="logo192.png" alt="" /> */}

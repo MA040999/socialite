@@ -55,7 +55,7 @@ function Post(props) {
           {displayImage ? (
             <img src={API_BASE_URL + displayImage} alt="user" />
           ) : (
-            <img src="/profile-icon.png" alt="user" />
+            <img src="/user-circle.svg" alt="user" />
           )}
         </div>
         <div className="post-username">

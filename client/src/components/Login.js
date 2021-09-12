@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { login, authError } from "../redux/auth/authActions";
+import { validateEmail } from "../common/common";
 
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [err, setErr] = useState("");
 
   const { login, error, err } = props;
   const history = useHistory();
@@ -16,20 +16,13 @@ function Login(props) {
     e.preventDefault();
     if (email === "" || password === "") {
       error("Please fill both the fields");
-      // setErr("Please fill both the fields");
     } else {
-      // setErr("");
-      error("");
-      login({ email, password }, history);
-
-      // try {
-      //   // const user = await axios.post("/login/", { email, password });
-      //   // setCurrentUser(user.data);
-      //   // setIsAuthenticated(true);
-      //   // history.push("/dashboard");
-      // } catch (error) {
-      //   setErr(error.response.data.message);
-      // }
+      if (validateEmail(email)) {
+        error("");
+        login({ email, password }, history);
+      } else {
+        error("Email address is invalid.");
+      }
     }
   };
 

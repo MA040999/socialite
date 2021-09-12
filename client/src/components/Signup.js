@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { signup, authError } from "../redux/auth/authActions";
+import { validateEmail } from "../common/common";
 
 function Signup(props) {
   const [email, setEmail] = useState("");
@@ -10,34 +11,31 @@ function Signup(props) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [msg, setMsg] = useState("");
-  // const [err, setErr] = useState("");
 
   const history = useHistory();
   const { signup, error, err } = props;
 
-  let handleSubmit = (e) => {
-    e.preventDefault();
+  const validateData = (email, fullname, password) => {
     if (email === "" || fullname === "" || password === "") {
       setMsg("");
-      // setErr("Please fill all the fields");
-      error("Please fill both the fields");
+      error("Please fill all the fields");
     } else {
-      if (password === confirmPassword) {
-        error("");
-        signup({ fullname, email, password }, history);
-        // setErr("");
-        // axios.post("/signup", { fullname, email, password }).then((res) => {
-        //   setCurrentUser({ id: res.data.id, fullname: res.data.fullname });
-        //   setIsAuthenticated(true);
-        //   setFullname("");
-        //   setEmail("");
-        //   setPassword("");
-        //   history.push("/dashboard");
-        // });
+      if (validateEmail(email)) {
+        if (password === confirmPassword) {
+          error("");
+          signup({ fullname, email, password }, history);
+        } else {
+          error("Passwords are not matching");
+        }
       } else {
-        error("Passwords are not matching");
+        error("Email address is invalid.");
       }
     }
+  };
+
+  let handleSubmit = (e) => {
+    e.preventDefault();
+    validateData(email, fullname, password);
   };
 
   return (
