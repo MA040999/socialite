@@ -1,4 +1,4 @@
-import { AUTH, LOGOUT, AUTH_ERROR } from "./authTypes";
+import { AUTH, LOGOUT, AUTH_ERROR, VERIFY_AUTH } from "./authTypes";
 import app from "../../axiosConfig";
 
 export const authError = (error) => {
@@ -24,7 +24,18 @@ export const verifyAuth = () => {
   return async (dispatch) => {
     try {
       const user = await app.get("/auth/verify-auth");
-      dispatch({ type: AUTH, payload: user?.data });
+      dispatch({ type: VERIFY_AUTH, payload: user?.data });
+    } catch {
+      dispatch({ type: LOGOUT });
+    }
+  };
+};
+
+export const verifyRefreshToken = () => {
+  return async (dispatch) => {
+    try {
+      const user = await app.get("/auth/refresh-token");
+      dispatch({ type: AUTH, payload: user?.data});
     } catch {
       dispatch({ type: LOGOUT });
     }

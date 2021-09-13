@@ -1,7 +1,9 @@
-import { AUTH, AUTH_ERROR, LOGOUT } from "./authTypes";
+import { AUTH, AUTH_ERROR, LOGOUT, VERIFY_AUTH } from "./authTypes";
 
 const intitalState = {
+  token: null,
   user: null,
+  expiresIn: null,
   err: "",
 };
 
@@ -10,12 +12,21 @@ const authReducer = (state = intitalState, action) => {
     case AUTH:
       return {
         ...state,
+        token: action.payload.token,
+        user: action.payload.userData,
+        expiresIn: action.payload.expiresIn,
+        err: "",
+      }
+    case VERIFY_AUTH:
+      return {
+        ...state,
         user: action.payload,
         err: "",
       };
     case LOGOUT:
       return {
         ...state,
+        token: null,
         user: null,
         err: "",
       };

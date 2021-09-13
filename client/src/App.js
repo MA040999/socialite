@@ -9,7 +9,7 @@ import NavBar from "./components/NavBar";
 // import Dashboard from "./components/Dashboard";
 // import ProtectedRoute from "./components/ProtectedRoute";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { verifyAuth } from "./redux/auth/authActions";
+import { verifyRefreshToken } from "./redux/auth/authActions";
 import PostInner from "./components/PostInner";
 import CreatePost from "./components/CreatePost";
 import { changeEditStatus } from "./redux/posts/postActions";
@@ -17,7 +17,8 @@ import Confirmation from "./components/Confirmation";
 
 function App(props) {
   const dispatch = useDispatch();
-  const { user, verifyAuth } = props;
+
+  const { user } = props;
 
   const editStatus = useSelector((state) => state.posts.isEditActive);
   const confirmationStatus = useSelector(
@@ -25,8 +26,14 @@ function App(props) {
   );
 
   useEffect(() => {
-    verifyAuth();
-  }, [verifyAuth]);
+    dispatch(verifyRefreshToken());
+
+    setTimeout(() => {
+      dispatch(verifyRefreshToken())
+    }, 600000 - 1000);
+
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (editStatus || confirmationStatus) {
@@ -97,7 +104,7 @@ function App(props) {
           <Redirect to="/" />
         </Switch>
 
-        {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
+        {/* <pre>{JSON.stringify(expiresIn, null, 2)}</pre> */}
       </div>
     </>
   );
@@ -109,10 +116,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    verifyAuth: () => dispatch(verifyAuth()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
