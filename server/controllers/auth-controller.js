@@ -35,9 +35,8 @@ const authenticateUser = async function (req, res) {
         expiresIn: 60 * 60 * 48,
       }
     );
-    // await res.setHeader("authorization", `Bearer ${token}`);
     res.cookie("__refresh__token", refreshToken, { httpOnly: true, maxAge: 1000 * 60 * 60 * 48, });
-    // await db.RefreshToken.create({ token });
+    
     // res.cookie("jwt", token, {
     //   httpOnly: true,
     //   sameSite: process.env.NODE_ENV === "production" ? "none" : true,
