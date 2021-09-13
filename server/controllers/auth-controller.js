@@ -21,7 +21,7 @@ const authenticateUser = async function (req, res) {
       },
       process.env.JWT_SECRET_KEY,
       {
-        expiresIn: 10,
+        expiresIn: 60 * 10,
       }
     );
 
