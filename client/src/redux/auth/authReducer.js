@@ -3,7 +3,6 @@ import { AUTH, AUTH_ERROR, LOGOUT, VERIFY_AUTH } from "./authTypes";
 const intitalState = {
   token: null,
   user: null,
-  expiresIn: null,
   err: "",
 };
 
@@ -14,7 +13,6 @@ const authReducer = (state = intitalState, action) => {
         ...state,
         token: action.payload.token,
         user: action.payload.userData,
-        expiresIn: action.payload.expiresIn,
         err: "",
       }
     case VERIFY_AUTH:

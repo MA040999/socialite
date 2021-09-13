@@ -25,14 +25,18 @@ function App(props) {
     (state) => state.posts.isConfirmationActive
   );
 
-  useEffect(() => {
+  const refreshToken = () => {
     dispatch(verifyRefreshToken());
 
     setTimeout(() => {
-      dispatch(verifyRefreshToken())
-    }, 600000 - 1000);
+      refreshToken()
+    }, 600000 - 1000); //10 minutes - 1 second
+  }
 
-    // eslint-disable-next-line
+  useEffect(() => {
+    refreshToken()
+  
+   // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
