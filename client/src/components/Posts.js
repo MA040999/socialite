@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import Post from "./Post";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getPosts } from "../redux/posts/postActions";
+import { changePage, getPosts } from "../redux/posts/postActions";
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 
 function Posts() {
   const dispatch = useDispatch();
@@ -11,25 +13,34 @@ function Posts() {
   const posts = useSelector((state) => state.posts.posts);
   const user = useSelector((state) => state.auth.user);
   const page = useSelector(state => state.posts.page)
+  const maxPages = useSelector(state => state.posts.maxPages)
+
 
   function handleClick(id) {
     history.push(`/post/${id}`);
   }
 
-  const fetchPosts = (pageNo) => {
-    dispatch(getPosts(pageNo));
-  };
+  const fetchPosts = () => {
+    dispatch(changePage())
+    dispatch(getPosts(page));
+  };  
 
   useEffect(() => {
-    fetchPosts(page);
+    dispatch(getPosts(page));
 
     // eslint-disable-next-line
-  }, [page]);
+  }, []);
 
   return (
     <>
       <div>
-        {posts.map((post) => {
+      <InfiniteScroll
+        dataLength={posts.length}
+        next={fetchPosts}
+        hasMore={page < maxPages ? true : false}
+        loader={<div key={0}>Loading ...</div>}
+      >
+          {posts.map((post) => {
           return (
             <Post
               key={post._id}
@@ -48,6 +59,8 @@ function Posts() {
             />
           );
         })}
+      </InfiniteScroll>
+        
       </div>
     </>
   );
