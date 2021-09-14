@@ -14,8 +14,14 @@ function CreatePost({ isComment, isEditPost }) {
   const dispatch = useDispatch();
   const isEdit = useSelector((state) => state.posts.isEditActive);
   const selectedPost = useSelector((state) => state.posts.selectedPost);
-  const postData = useSelector((state) =>
-    state.posts.posts.find((post) => post._id === selectedPost)
+  const postData = useSelector((state) =>{
+    if(state.posts.post){
+      return state.posts.post
+    }
+    else{
+      return state.posts.posts.find((post) => post._id === selectedPost)
+    }
+  }
   );
   const user = useSelector((state) => state.auth.user);
 

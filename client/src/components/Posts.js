@@ -10,19 +10,21 @@ function Posts() {
   const history = useHistory();
   const posts = useSelector((state) => state.posts.posts);
   const user = useSelector((state) => state.auth.user);
+  const page = useSelector(state => state.posts.page)
 
   function handleClick(id) {
     history.push(`/post/${id}`);
   }
 
-  const fetchPosts = () => {
-    dispatch(getPosts());
+  const fetchPosts = (pageNo) => {
+    dispatch(getPosts(pageNo));
   };
 
   useEffect(() => {
-    fetchPosts();
+    fetchPosts(page);
+
     // eslint-disable-next-line
-  }, []);
+  }, [page]);
 
   return (
     <>

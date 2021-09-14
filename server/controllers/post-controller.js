@@ -49,12 +49,27 @@ const createPost = async function (req, res) {
 
 const getPosts = async function (req, res) {
   try {
-    const posts = await db.Posts.find().sort({ createdAt: -1 }).limit(10);
-    res.status(200).json(posts);
+    const { page } = req.query
+    const LIMIT = 8
+    const maxPages = await db.Posts.countDocuments() / LIMIT
+    const skipDocs = (Number(page) - 1) * LIMIT
+
+    const posts = await db.Posts.find().sort({ createdAt: -1 }).limit(LIMIT).skip(skipDocs);
+    res.status(200).json({posts, maxPages: Math.ceil(maxPages)});
   } catch (error) {
     res.status(404).json(error);
   }
 };
+
+const getPostById = async function(req,res){
+  try {
+    const post = await db.Posts.findById(req.params.id)
+    res.status(200).json(post)
+  } catch (error) {
+    res.status(404).json(error);
+    
+  }
+}
 
 const updatePost = async function (req, res) {
   try {
@@ -157,4 +172,5 @@ module.exports = {
   updatePost,
   likePost,
   deletePost,
+  getPostById,
 };

@@ -6,8 +6,6 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import NavBar from "./components/NavBar";
-// import Dashboard from "./components/Dashboard";
-// import ProtectedRoute from "./components/ProtectedRoute";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { verifyRefreshToken } from "./redux/auth/authActions";
 import PostInner from "./components/PostInner";

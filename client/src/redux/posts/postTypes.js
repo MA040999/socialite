@@ -1,7 +1,12 @@
 export const GET_POSTS = "GET_POSTS";
+export const GET_POST = "GET_POST";
 export const CREATE_POST = "CREATE_POST";
 export const UPDATE_POST = "UPDATE_POST";
+export const REMOVE_POST = "REMOVE_POST";
+export const REMOVE_POSTS = "REMOVE_POSTS";
 export const DELETE_POST = "DELETE_POST";
+export const CHANGE_PAGE = "CHANGE_PAGE";
 export const SELECTED_POST = "SELECTED_POST";
 export const IS_EDIT_ACTIVE = "IS_EDIT_ACTIVE";
 export const IS_CONFIRMATION_ACTIVE = "IS_CONFIRMATION_ACTIVE";
+export const IS_COMMENT_ACTIVE = 'IS_COMMENT_ACTIVE'
