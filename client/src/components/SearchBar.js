@@ -19,7 +19,7 @@ function SearchBar() {
   }
 
   const handleKeyPress = (e) => {
-    if(e.keyCode === 13){
+    if(e.which === 13){
       handleSearch()
     }
   }
