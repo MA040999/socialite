@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { v1: uuidv1 } = require("uuid");
 const db = require("../models");
+const Comment = require("../models/Comment");
 const Posts = require("../models/Posts");
 
 const createPost = async function (req, res) {
@@ -166,6 +167,47 @@ const deletePost = async function (req, res) {
   }
 };
 
+const comment = async function (req, res) {
+  try {
+    if (!req.userId)
+      return res.status(400).json({ message: "Unauthenticated" });
+
+    const { id } = req.params;
+    const content = req.body.content;
+
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).send("No post with this id");
+
+    const comment = new Comment({
+      content,
+      creator: req.userId,
+      name: req.fullname,
+      displayImage: req.displayImage,
+    });
+
+    const post = await db.Posts.findById(id);
+
+    post.comments.push(comment)
+
+    const updatedPost = await db.Posts.findByIdAndUpdate(id, post, {new: true})
+
+    return res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(409).json(error);
+  }
+};
+
+const search = async function (req, res) {
+  try {
+    const { searchQuery } = req.query;
+
+
+    return res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(409).json(error);
+  }
+};
+
 module.exports = {
   createPost,
   getPosts,
@@ -173,4 +215,6 @@ module.exports = {
   likePost,
   deletePost,
   getPostById,
+  comment,
+  search
 };

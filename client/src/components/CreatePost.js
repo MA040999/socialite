@@ -4,14 +4,17 @@ import { BiImageAdd } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeEditStatus,
+  comment,
   createPost,
   updatePost,
 } from "../redux/posts/postActions";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import { API_BASE_URL } from "../common/common";
+import { useParams } from "react-router";
 
-function CreatePost({ isComment, isEditPost }) {
+function CreatePost({ isComment, isEditPost, commentRef }) {
   const dispatch = useDispatch();
+  const { id } = useParams();
   const isEdit = useSelector((state) => state.posts.isEditActive);
   const selectedPost = useSelector((state) => state.posts.selectedPost);
   const postData = useSelector((state) =>{
@@ -36,7 +39,12 @@ function CreatePost({ isComment, isEditPost }) {
   };
 
   const validateData = () => {
-    if (imageUrls.length === 0 && postInput === "") return false;
+    if(isComment){
+      if(postInput === '') return false
+    }
+    else{
+      if (imageUrls.length === 0 && postInput === "") return false;
+    }
 
     return true;
   };
@@ -44,16 +52,24 @@ function CreatePost({ isComment, isEditPost }) {
   const handleSubmit = () => {
     if (validateData()) {
       let formData = new FormData();
-      Array.from(imagesFileArray).map((file) => {
-        formData.append("file", file);
-        return null;
-      });
+      if(!isComment){
+        Array.from(imagesFileArray).map((file) => {
+          formData.append("file", file);
+          return null;
+        });
+      }
+
       formData.append("content", postInput);
 
       if (isEdit) {
         dispatch(updatePost(formData, selectedPost));
         dispatch(changeEditStatus());
-      } else {
+      }
+      else if(isComment){
+        dispatch(comment(formData, id))
+        clearInputs();
+      } 
+      else {
         dispatch(createPost(formData));
         clearInputs();
       }

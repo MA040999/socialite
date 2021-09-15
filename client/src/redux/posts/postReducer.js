@@ -1,5 +1,6 @@
 import {
   CHANGE_PAGE,
+  COMMENT,
   CREATE_POST,
   DELETE_POST,
   GET_POST,
@@ -57,6 +58,10 @@ const postReducer = (state = initialState, action) => {
         ),
         post: state.post && action.payload
       };
+    case COMMENT:
+      return {
+        ...state, post: state.post && action.payload
+      }
     case CREATE_POST:
       return { ...state, posts: [action.payload, ...state.posts] };
     case SELECTED_POST:

@@ -27,12 +27,13 @@ function Post(props) {
     displayImage,
     name,
     likeCount,
+    comments,
     images,
     id,
     user,
   } = props;
 
-  const isLiked = likeCount.includes(user?.id);
+  const isLiked = likeCount?.includes(user?.id);
 
   const handleEditPost = (id) => {
     dispatch(changeEditStatus());
@@ -46,6 +47,7 @@ function Post(props) {
   const handleTrashClick = () => {
     dispatch(changeConfirmationStatus());
     dispatch(changeSelectedPost(id));
+
   };
 
   return (
@@ -127,7 +129,7 @@ function Post(props) {
           </div>
           <div className="icons-container-inner">
             <BiCommentDetail className="icon" color="white" onClick={onPress} />
-            <span>26</span>
+            <span>{comments.length}</span>
           </div>
         </div>
       )}

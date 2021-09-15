@@ -10,7 +10,10 @@ function Posts() {
   const dispatch = useDispatch();
 
   const history = useHistory();
-  const posts = useSelector((state) => state.posts.posts);
+  const posts = useSelector((state) => state.posts.posts.filter((post, index, self) =>
+  index === self.findIndex((p) => (
+    p._id === post._id
+  ))));
   const user = useSelector((state) => state.auth.user);
   const page = useSelector(state => state.posts.page)
   const maxPages = useSelector(state => state.posts.maxPages)
@@ -22,7 +25,7 @@ function Posts() {
 
   const fetchPosts = () => {
     dispatch(changePage())
-    dispatch(getPosts(page));
+    dispatch(getPosts(page+1));
   };  
 
   useEffect(() => {
@@ -33,12 +36,11 @@ function Posts() {
 
   return (
     <>
-      <div>
       <InfiniteScroll
+        style={{overflow: 'visible'}}
         dataLength={posts.length}
         next={fetchPosts}
         hasMore={page < maxPages ? true : false}
-        loader={<div key={0}>Loading ...</div>}
       >
           {posts.map((post) => {
           return (
@@ -55,13 +57,13 @@ function Posts() {
               content={post.content}
               createdAt={post.createdAt}
               likeCount={post.likeCount}
+              comments={post.comments}
               images={post.images}
             />
           );
         })}
       </InfiniteScroll>
         
-      </div>
     </>
   );
 }

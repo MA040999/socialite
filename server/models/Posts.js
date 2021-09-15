@@ -13,7 +13,10 @@ const postSchema = mongoose.Schema({
     type: String,
     default: null,
   },
-  content: String,
+  content: {
+    type: String, 
+    required: true
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -22,10 +25,10 @@ const postSchema = mongoose.Schema({
     type: [String],
     default: [],
   },
-  //   comments: {
-  //     type: [],
-  //     default: 0,
-  //   },
+  comments: {
+    type: [Object],
+    default: [],
+  },
   images: [String],
 });
 

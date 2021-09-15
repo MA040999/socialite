@@ -1,5 +1,6 @@
 import {
   CHANGE_PAGE,
+  COMMENT,
   CREATE_POST,
   DELETE_POST,
   GET_POST,
@@ -9,6 +10,7 @@ import {
   IS_EDIT_ACTIVE,
   REMOVE_POST,
   REMOVE_POSTS,
+  SEARCH,
   SELECTED_POST,
   UPDATE_POST,
 } from "./postTypes";
@@ -69,6 +71,25 @@ export const likePost = (id) => async (dispatch) => {
     dispatch(verifyAuth());
     const likedPost = await app.put(`/posts/like-post/${id}`);
     dispatch({ type: UPDATE_POST, payload: likedPost.data });
+  } catch (error) {
+    console.log(`error`, error);
+  }
+};
+
+export const comment = (formData, id) => async (dispatch) => {
+  try {
+    dispatch(verifyAuth());
+    const updatedPost = await app.post(`/posts/comment/${id}`, formData);
+    dispatch({ type: COMMENT, payload: updatedPost.data });
+  } catch (error) {
+    console.log(`error`, error);
+  }
+};
+
+export const search = (searchTerm) => async (dispatch) => {
+  try {
+    const result = await app.get(`/posts/search?searchQuery=${searchTerm}`);
+    dispatch({ type: SEARCH, payload: result.data });
   } catch (error) {
     console.log(`error`, error);
   }

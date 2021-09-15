@@ -489,7 +489,7 @@ input[type="file"] {
 }
 .edit-post {
   width: 85vw;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(10px);
 }
 .close-edit {
   z-index: 101;
