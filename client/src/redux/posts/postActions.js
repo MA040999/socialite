@@ -8,8 +8,10 @@ import {
   IS_COMMENT_ACTIVE,
   IS_CONFIRMATION_ACTIVE,
   IS_EDIT_ACTIVE,
+  IS_SEARCH_ACTIVE,
   REMOVE_POST,
   REMOVE_POSTS,
+  RESET_PAGE,
   SEARCH,
   SELECTED_POST,
   UPDATE_POST,
@@ -117,6 +119,20 @@ export const changePage = () => {
     type: CHANGE_PAGE,
   };
 };
+
+export const resetPage = () => {
+  return {
+    type: RESET_PAGE,
+  };
+};
+
+export const changeSearchStatus = (status) => {
+  return {
+    type: IS_SEARCH_ACTIVE,
+    payload: status
+  };
+};
+
 
 export const changeConfirmationStatus = () => {
   return {

@@ -201,10 +201,13 @@ const search = async function (req, res) {
   try {
     const { searchQuery } = req.query;
 
+    const searchTerm = new RegExp(searchQuery, 'i')
 
-    return res.status(200).json(updatedPost);
+    const searchedPosts = await db.Posts.find({$or: [{content: searchTerm}, {name: searchTerm}] })
+
+    return res.status(200).json(searchedPosts);
   } catch (error) {
-    res.status(409).json(error);
+    res.status(404).json({message: error.message});
   }
 };
 

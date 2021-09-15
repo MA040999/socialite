@@ -17,6 +17,7 @@ function Posts() {
   const user = useSelector((state) => state.auth.user);
   const page = useSelector(state => state.posts.page)
   const maxPages = useSelector(state => state.posts.maxPages)
+  const isSearchActive = useSelector(state => state.posts.isSearchActive)
 
 
   function handleClick(id) {
@@ -25,7 +26,7 @@ function Posts() {
 
   const fetchPosts = () => {
     dispatch(changePage())
-    dispatch(getPosts(page+1));
+    if(!isSearchActive) dispatch(getPosts(page+1));
   };  
 
   useEffect(() => {

@@ -8,8 +8,11 @@ import {
   IS_COMMENT_ACTIVE,
   IS_CONFIRMATION_ACTIVE,
   IS_EDIT_ACTIVE,
+  IS_SEARCH_ACTIVE,
   REMOVE_POST,
   REMOVE_POSTS,
+  RESET_PAGE,
+  SEARCH,
   SELECTED_POST,
   UPDATE_POST,
 } from "./postTypes";
@@ -22,7 +25,8 @@ const initialState = {
   page: 1,
   maxPages: null,
   post: null,
-  isCommentActive: false
+  isCommentActive: false,
+  isSearchActive: false
 };
 
 const postReducer = (state = initialState, action) => {
@@ -58,6 +62,10 @@ const postReducer = (state = initialState, action) => {
         ),
         post: state.post && action.payload
       };
+    case SEARCH:
+      return {
+        ...state, posts: action.payload
+      }
     case COMMENT:
       return {
         ...state, post: state.post && action.payload
@@ -69,6 +77,11 @@ const postReducer = (state = initialState, action) => {
         ...state,
         selectedPost: action.payload,
       };
+    case RESET_PAGE:
+      return {
+        ...state,
+        page: 1
+      }
     case CHANGE_PAGE:
       return {
         ...state,
@@ -79,6 +92,10 @@ const postReducer = (state = initialState, action) => {
     case IS_COMMENT_ACTIVE:
       return {
         ...state, isCommentActive: !state.isCommentActive
+      }
+    case IS_SEARCH_ACTIVE:
+      return {
+        ...state, isSearchActive: action.payload
       }
     case IS_EDIT_ACTIVE:
       return { ...state, isEditActive: !state.isEditActive };

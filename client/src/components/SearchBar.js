@@ -1,21 +1,28 @@
 import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
+import { MdCancel } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
-import { search } from "../redux/posts/postActions";
+import { changeSearchStatus, getPosts, resetPage, search } from "../redux/posts/postActions";
+
 function SearchBar() {
   const dispatch = useDispatch()
-  const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearch = () => {
     if(searchTerm.trim()){
       dispatch(search(searchTerm))
+      dispatch(changeSearchStatus(true))
+      dispatch(resetPage())
     }
     else{
-      history.push('/')
+      dispatch(getPosts(1))
     }
+  }
 
+  const handleCancel = () => {
+    setSearchTerm('')
+    dispatch(changeSearchStatus(false))
+    dispatch(getPosts(1))
   }
 
   const handleKeyPress = (e) => {
@@ -36,7 +43,10 @@ function SearchBar() {
         onKeyPress={(e)=>handleKeyPress(e)}
       />
       <button className="search-icon">
-        <BsSearch onClick={handleSearch} style={{ fontSize: "18px" }} />
+        {
+          searchTerm ? <MdCancel  onClick={handleCancel} style={{ fontSize: "18px" }}/> : <BsSearch onClick={handleSearch} style={{ fontSize: "18px" }} />
+        }
+        
       </button>
     </div>
     
