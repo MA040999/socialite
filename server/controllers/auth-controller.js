@@ -7,11 +7,11 @@ const authenticateUser = async function (req, res) {
   try {
     const user = await db.Users.findOne({ email: req.body.email });
 
-    if (!user) return res.status(404).json({ message: "User does not exist." });
+    if (!user) return res.status(404).json({ message: "User does not exist" });
 
     const auth = await bcrypt.compare(req.body.password, user.password);
 
-    if (!auth) return res.status(400).json({ message: "Invalid password." });
+    if (!auth) return res.status(400).json({ message: "Invalid password" });
 
     const token = jwt.sign(
       {
@@ -36,7 +36,7 @@ const authenticateUser = async function (req, res) {
       }
     );
     res.cookie("__refresh__token", refreshToken, { httpOnly: true, maxAge: 1000 * 60 * 60 * 48, });
-    
+
     // res.cookie("jwt", token, {
     //   httpOnly: true,
     //   sameSite: process.env.NODE_ENV === "production" ? "none" : true,
@@ -54,7 +54,7 @@ const authenticateUser = async function (req, res) {
       token
     });
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong!" });
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -67,7 +67,7 @@ const createUser = async (req, res) => {
     if (user)
       return res
         .status(400)
-        .json({ message: "User with this email already exists." });
+        .json({ message: "User with this email already exists" });
 
     db.Users.create(req.body).then((result) => {
       const refreshToken = jwt.sign(

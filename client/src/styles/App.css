@@ -641,6 +641,82 @@ input[type="file"] {
   text-transform: uppercase;
 }
 
+.go-to-top-container {
+  position: fixed;
+  bottom: 95px;
+  right: 35px;
+}
+.go-to-top-btn {
+  background: linear-gradient(
+    to top right,
+    var(--color1-transparent),
+    var(--color2-transparent)
+  );
+  border-radius: var(--radius);
+  border: none;
+  display: flex;
+  position: relative;
+  cursor: pointer;
+}
+.go-to-top-btn::after {
+  content: "";
+  background: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  transform: scale(1.15);
+  border-radius: var(--radius);
+  filter: blur(3px);
+}
+.go-to-top-btn svg {
+  width: clamp(0.8rem, 7.5vw, 2rem);
+  height: clamp(0.8rem, 7.5vw, 2rem);
+}
+
+.notification-container {
+  position: fixed;
+  width: max-content;
+  padding: clamp(1em, 2vw, 2em);
+  height: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 2em;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to top right,
+    var(--color1-transparent),
+    var(--color2-transparent)
+  );
+  z-index: 100;
+  backdrop-filter: blur(3px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  animation: animate-notification 0.4s ease-in-out;
+}
+.notification-container::after {
+  content: "";
+  background: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  transform: scale(1.05);
+  border-radius: var(--radius);
+  filter: blur(10px);
+  opacity: 0.5;
+}
+.notification-container p {
+  letter-spacing: 1px;
+  font-size: clamp(0.6em, 1.5vw, 1em);
+}
+
 @media screen and (max-width: 1000px) {
   .navbar {
     height: 65px;
@@ -722,6 +798,9 @@ input[type="file"] {
   .login-input-container {
     width: 65%;
   }
+  .go-to-top-container {
+    bottom: 80px;
+  }
 }
 @media screen and (max-width: 500px) {
   .App {
@@ -759,6 +838,10 @@ input[type="file"] {
   .login-input-container {
     width: 80%;
   }
+  .go-to-top-container {
+    bottom: 75px;
+    right: 30px;
+  }
 }
 @media screen and (max-width: 450px) {
   .search-container {
@@ -789,6 +872,10 @@ input[type="file"] {
   .login-input-container {
     width: 80%;
   }
+  .go-to-top-container {
+    bottom: 70px;
+    right: 25px;
+  }
 }
 
 @keyframes animate-navbar {
@@ -799,5 +886,16 @@ input[type="file"] {
   100% {
     transform-origin: top;
     transform: scaleY(0.8);
+  }
+}
+
+@keyframes animate-notification {
+  0% {
+    top: -100px;
+    /* transform: translate(0, 1000px); */
+  }
+  100% {
+    top: 2em;
+    /* transform: translate(0, 0px); */
   }
 }

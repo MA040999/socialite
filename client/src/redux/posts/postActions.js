@@ -1,4 +1,5 @@
 import {
+  ADD_NOTIFICATION_MSG,
   CHANGE_PAGE,
   COMMENT,
   CREATE_POST,
@@ -9,6 +10,7 @@ import {
   IS_CONFIRMATION_ACTIVE,
   IS_EDIT_ACTIVE,
   IS_SEARCH_ACTIVE,
+  REMOVE_NOTIFICATION_MSG,
   REMOVE_POST,
   REMOVE_POSTS,
   RESET_PAGE,
@@ -50,8 +52,10 @@ export const createPost = (formData) => async (dispatch) => {
 export const updatePost = (formData, id) => async (dispatch) => {
   try {
     dispatch(verifyAuth());
-    const updatedPost = await app.put(`/posts/update-post/${id}`, formData);
-    dispatch({ type: UPDATE_POST, payload: updatedPost.data });
+    const {data} = await app.put(`/posts/update-post/${id}`, formData);
+    dispatch({ type: UPDATE_POST, payload: data.updatedPost });
+
+    dispatch({type: ADD_NOTIFICATION_MSG, payload: data.message})
   } catch (error) {
     console.log(`error`, error);
   }
@@ -60,8 +64,11 @@ export const updatePost = (formData, id) => async (dispatch) => {
 export const deletePost = (id, history) => async (dispatch) => {
   try {
     dispatch(verifyAuth());
-    await app.delete(`/posts/delete-post/${id}`);
+    const { data } = await app.delete(`/posts/delete-post/${id}`);
     dispatch({ type: DELETE_POST, payload: id });
+
+    dispatch({type: ADD_NOTIFICATION_MSG, payload: data.message})
+
     history && history.push('/')
   } catch (error) {
     console.log(`error`, error);
@@ -123,6 +130,19 @@ export const changePage = () => {
 export const resetPage = () => {
   return {
     type: RESET_PAGE,
+  };
+};
+
+export const addNotificationMsg = (msg) => {
+  return {
+    type: ADD_NOTIFICATION_MSG,
+    payload: msg
+  };
+};
+
+export const removeNotificationMsg = () => {
+  return {
+    type: REMOVE_NOTIFICATION_MSG,
   };
 };
 

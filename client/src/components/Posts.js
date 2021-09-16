@@ -30,8 +30,8 @@ function Posts() {
   };  
 
   useEffect(() => {
-    dispatch(getPosts(page));
-
+    if(!isSearchActive) dispatch(getPosts(page));
+    
     // eslint-disable-next-line
   }, []);
 

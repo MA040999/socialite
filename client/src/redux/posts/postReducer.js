@@ -1,4 +1,5 @@
 import {
+  ADD_NOTIFICATION_MSG,
   CHANGE_PAGE,
   COMMENT,
   CREATE_POST,
@@ -9,6 +10,7 @@ import {
   IS_CONFIRMATION_ACTIVE,
   IS_EDIT_ACTIVE,
   IS_SEARCH_ACTIVE,
+  REMOVE_NOTIFICATION_MSG,
   REMOVE_POST,
   REMOVE_POSTS,
   RESET_PAGE,
@@ -26,7 +28,8 @@ const initialState = {
   maxPages: null,
   post: null,
   isCommentActive: false,
-  isSearchActive: false
+  isSearchActive: false,
+  notificationMsg: null,
 };
 
 const postReducer = (state = initialState, action) => {
@@ -86,6 +89,14 @@ const postReducer = (state = initialState, action) => {
       return {
         ...state,
         page: state.page + 1
+      }
+    case REMOVE_NOTIFICATION_MSG:
+      return {
+        ...state, notificationMsg: null
+      }
+    case ADD_NOTIFICATION_MSG:
+      return {
+        ...state, notificationMsg: action.payload
       }
     case IS_CONFIRMATION_ACTIVE:
       return { ...state, isConfirmationActive: !state.isConfirmationActive };

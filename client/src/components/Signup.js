@@ -1,34 +1,32 @@
 import React, { useState } from "react";
 
 import { useHistory } from "react-router-dom";
-import { connect } from "react-redux";
-import { signup, authError } from "../redux/auth/authActions";
+import { useDispatch } from "react-redux";
+import { signup } from "../redux/auth/authActions";
 import { validateEmail } from "../common/common";
+import { addNotificationMsg } from "../redux/posts/postActions";
 
-function Signup(props) {
+function Signup() {
+  const dispatch = useDispatch()
   const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [msg, setMsg] = useState("");
 
   const history = useHistory();
-  const { signup, error, err } = props;
 
   const validateData = (email, fullname, password) => {
     if (email === "" || fullname === "" || password === "") {
-      setMsg("");
-      error("Please fill all the fields");
+      dispatch(addNotificationMsg("Please fill all the fields"));
     } else {
       if (validateEmail(email)) {
         if (password === confirmPassword) {
-          error("");
-          signup({ fullname, email, password }, history);
+          dispatch(signup({ fullname, email, password }, history));
         } else {
-          error("Passwords are not matching");
+          dispatch(addNotificationMsg("Passwords are not matching"));
         }
       } else {
-        error("Email address is invalid.");
+        dispatch(addNotificationMsg("Email address is invalid"));
       }
     }
   };
@@ -40,8 +38,6 @@ function Signup(props) {
 
   return (
     <form className="login-container" onSubmit={(e) => handleSubmit(e)}>
-      {msg ? <div className="msg">{msg}</div> : ""}
-      {err ? <div className="err">{err}</div> : ""}
       <h2>SIGNUP</h2>
       <div className="login-input-container">
         <input
@@ -85,22 +81,4 @@ function Signup(props) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isAuth: state.isAuth,
-    user: state.user,
-    err: state.err,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signup: ({ fullname, email, password }, history) =>
-      dispatch(signup({ fullname, email, password }, history)),
-    error: (msg) => {
-      dispatch(authError(msg));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export default Signup;

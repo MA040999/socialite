@@ -1,6 +1,6 @@
 import "./styles/App.css";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import HomePage from "./components/HomePage";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Login from "./components/Login";
@@ -12,13 +12,17 @@ import PostInner from "./components/PostInner";
 import CreatePost from "./components/CreatePost";
 import { changeEditStatus } from "./redux/posts/postActions";
 import Confirmation from "./components/Confirmation";
+import GoToTop from "./components/GoToTop";
+import Notification from "./components/Notification";
 
 function App(props) {
   const dispatch = useDispatch();
+  const [scroll, setScroll] = useState(false)
 
   const { user } = props;
 
   const editStatus = useSelector((state) => state.posts.isEditActive);
+  const notificationMsg = useSelector((state) => state.posts.notificationMsg);
   const confirmationStatus = useSelector(
     (state) => state.posts.isConfirmationActive
   );
@@ -31,9 +35,18 @@ function App(props) {
     }, 600000 - 1000); //10 minutes - 1 second
   }
 
+  const checkScroll = () => {
+    setScroll(window.scrollY > 0 ? true : false)
+  }
+
   useEffect(() => {
     refreshToken()
   
+    window.addEventListener('scroll', checkScroll)
+
+    return ()=>{
+      window.removeEventListener('scroll', checkScroll)
+    }
    // eslint-disable-next-line
   }, []);
 
@@ -91,6 +104,9 @@ function App(props) {
         ""
       )}
       <div className="App">
+        {
+          notificationMsg && <Notification/>
+        }
         <NavBar />
         <Switch>
           <Route path="/" exact component={HomePage} />
@@ -106,6 +122,9 @@ function App(props) {
           <Redirect to="/" />
         </Switch>
 
+        {
+          scroll && <GoToTop/>
+        }
         {/* <pre>{JSON.stringify(expiresIn, null, 2)}</pre> */}
       </div>
     </>

@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import { changeSearchStatus, getPosts, resetPage, search } from "../redux/posts/postActions";
 
 function SearchBar() {
   const dispatch = useDispatch()
+  const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearch = () => {
+    history.push('/')
     if(searchTerm.trim()){
       dispatch(search(searchTerm))
       dispatch(changeSearchStatus(true))

@@ -111,7 +111,7 @@ const updatePost = async function (req, res) {
       { new: true }
     );
 
-    res.status(200).json(updatedPost);
+    res.status(200).json({updatedPost, message: 'Post updated successfully'});
   } catch (error) {
     res.status(409).json(error);
   }
@@ -161,7 +161,7 @@ const deletePost = async function (req, res) {
 
     await db.Posts.findByIdAndRemove(id);
 
-    return res.status(200).json({ message: "Post successfully deleted." });
+    return res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
     res.status(409).json(error);
   }

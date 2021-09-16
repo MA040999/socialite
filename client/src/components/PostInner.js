@@ -49,7 +49,7 @@ function PostInner() {
       )}
       <div className="comments-container">
         {comments?.map(comment=>
-          <Comment comment={comment} />
+          <Comment key={comment._id} comment={comment} />
         )}
         <div ref={commentRef}/>
         
