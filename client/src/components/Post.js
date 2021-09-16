@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BiCommentDetail } from "react-icons/bi";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FiEdit, FiHeart } from "react-icons/fi";
@@ -12,12 +12,11 @@ import {
   changeSelectedPost,
   likePost,
 } from "../redux/posts/postActions";
-// import { useHistory } from "react-router-dom";
 
 function Post(props) {
-  // const history = useHistory();
   const dispatch = useDispatch();
 
+  
   const {
     isComment,
     onPress,
@@ -32,8 +31,9 @@ function Post(props) {
     id,
     user,
   } = props;
-
-  const isLiked = likeCount?.includes(user?.id);
+  
+  const [like, setLike] = useState(likeCount?.includes(user?.id))
+  const [likeLength, setLikeLength] = useState(likeCount?.length)
 
   const handleEditPost = (id) => {
     dispatch(changeEditStatus());
@@ -41,13 +41,14 @@ function Post(props) {
   };
 
   const handleLikeClick = () => {
+    setLike(!like)
+    setLikeLength(prev => like ? prev-1 : prev+1)
     dispatch(likePost(id));
   };
 
   const handleTrashClick = () => {
     dispatch(changeConfirmationStatus());
     dispatch(changeSelectedPost(id));
-
   };
 
   return (
@@ -112,7 +113,7 @@ function Post(props) {
       ) : (
         <div className="icons-container like-comment-container">
           <div className="icons-container-inner">
-            {isLiked ? (
+            {like ? (
               <FaHeart
                 className="icon"
                 color="white"
@@ -125,7 +126,7 @@ function Post(props) {
                 onClick={handleLikeClick}
               />
             )}
-            <span>{likeCount.length}</span>
+            <span>{likeLength}</span>
           </div>
           <div className="icons-container-inner">
             <BiCommentDetail className="icon" color="white" onClick={onPress} />
