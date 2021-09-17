@@ -32,12 +32,15 @@ const createPost = async function (req, res) {
       })
     : "";
 
+  const user = await db.Users.findById(req.userId)
+
+
   const post = new Posts({
     content,
     images: imagePaths,
     creator: req.userId,
-    name: req.fullname,
-    displayImage: req.displayImage,
+    name: user.fullname,
+    displayImage: user.displayImage,
   });
 
   try {
@@ -178,11 +181,13 @@ const comment = async function (req, res) {
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send("No post with this id");
 
+    const user = await db.Users.findById(req.userId)
+
     const comment = new Comment({
       content,
       creator: req.userId,
-      name: req.fullname,
-      displayImage: req.displayImage,
+      name: user.fullname,
+      displayImage: user.displayImage,
     });
 
     const post = await db.Posts.findById(id);
@@ -219,5 +224,5 @@ module.exports = {
   deletePost,
   getPostById,
   comment,
-  search
+  search,
 };

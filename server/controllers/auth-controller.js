@@ -1,4 +1,5 @@
 const db = require("../models");
+const { v1: uuidv1 } = require("uuid");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -16,8 +17,6 @@ const authenticateUser = async function (req, res) {
     const token = jwt.sign(
       {
         id: user._id,
-        fullname: user.fullname,
-        displayImage: user.displayImage,
       },
       process.env.JWT_SECRET_KEY,
       {
@@ -26,9 +25,8 @@ const authenticateUser = async function (req, res) {
     );
 
     const refreshToken = jwt.sign(
-      { id: user._id,
-        fullname: user.fullname,
-        displayImage: user.displayImage
+      { 
+        id: user._id,
       },
       process.env.REFRESH_TOKEN_SECRET_KEY,
       {
@@ -71,9 +69,8 @@ const createUser = async (req, res) => {
 
     db.Users.create(req.body).then((result) => {
       const refreshToken = jwt.sign(
-        { id: result._id,
-          fullname: result.fullname,
-          displayImage: result.displayImage
+        { 
+          id: result._id,
         },
         process.env.REFRESH_TOKEN_SECRET_KEY,
         {
@@ -84,8 +81,6 @@ const createUser = async (req, res) => {
       const token = jwt.sign(
         {
           id: result._id,
-          fullname: result.fullname,
-          displayImage: result.displayImage,
         },
         process.env.JWT_SECRET_KEY,
         {
@@ -114,13 +109,48 @@ const createUser = async (req, res) => {
   }
 };
 
-const verifyAuth = (req, res) => {
+const updateProfile = async (req, res) => {
   if (!req.userId) return res.status(401).json({ message: "Unauthorized" });
+
+  const uploadFolderPath = "/uploads/";
+
+  const user = await db.Users.findById(req.userId)
+
+  if(req.body.fullname){
+    user.fullname = req.body.fullname
+  }
+
+  const file = req.files ? req.files.file : null
+
+  if(file){
+    let extData = file.name.split(".");
+    let ext = extData[extData.length - 1].toString();
+    let imageUrl = uploadFolderPath + uuidv1() + "." + ext;
+    let uploadPath = process.cwd() + imageUrl;
+    file.mv(uploadPath, function (err) {
+      if (err) return res.status(500).send(err);
+  
+      console.log("File uploaded!");
+    });
+    user.displayImage = imageUrl
+  }
+
+  const updatedUser = await db.Users.findByIdAndUpdate(req.userId, user, {new: true})
+
+  await db.Posts.updateMany({creator: req.userId}, {name: updatedUser.fullname, displayImage: updatedUser.displayImage}, {new: true})
+  
+  res.status(200).json(updatedUser);
+};
+
+const verifyAuth = async (req, res) => {
+  if (!req.userId) return res.status(401).json({ message: "Unauthorized" });
+
+  const user = await db.Users.findById(req.userId)
 
   return res.status(200).json({
     id: req.userId,
-    fullname: req.fullname,
-    displayImage: req.displayImage,
+    fullname: user.fullname,
+    displayImage: user.displayImage,
   });
 };
 
@@ -129,18 +159,18 @@ const logout = (req, res) => {
   res.sendStatus(200);
 };
 
-const verifyRefreshToken = (req,res) => {
+const verifyRefreshToken = async (req,res) => {
   const refreshToken = req.cookies.__refresh__token;
 
   if (refreshToken) {
     const decodedTokenData = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
 
     if(decodedTokenData){
+
+      const { id } = decodedTokenData
       const token = jwt.sign(
         {
-          id: decodedTokenData?.id,
-          fullname: decodedTokenData?.fullname,
-          displayImage: decodedTokenData?.displayImage,
+          id: id,   
         },
         process.env.JWT_SECRET_KEY,
         {
@@ -148,11 +178,13 @@ const verifyRefreshToken = (req,res) => {
         }
       );
 
+      const user = await db.Users.findById(id)
+
       return res.status(200).json({
         userData: {
-          id: decodedTokenData.id,
-          fullname: decodedTokenData.fullname,
-          displayImage: decodedTokenData.displayImage,
+          id,
+          fullname: user.fullname,
+          displayImage: user.displayImage,
         },
         token,
       });
@@ -161,4 +193,4 @@ const verifyRefreshToken = (req,res) => {
   return res.status(401).json({ message: "Unauthorized" });
 }
 
-module.exports = { authenticateUser, logout, createUser, verifyAuth, verifyRefreshToken };
+module.exports = { authenticateUser, logout, createUser, verifyAuth, verifyRefreshToken, updateProfile };

@@ -1,4 +1,4 @@
-import { AUTH, AUTH_ERROR, LOGOUT, VERIFY_AUTH } from "./authTypes";
+import { AUTH, AUTH_ERROR, LOGOUT, UPDATE_PROFILE, VERIFY_AUTH } from "./authTypes";
 
 const intitalState = {
   token: null,
@@ -8,6 +8,11 @@ const intitalState = {
 
 const authReducer = (state = intitalState, action) => {
   switch (action.type) {
+    case UPDATE_PROFILE:
+      return {
+        ...state,
+        user: action.payload
+      }
     case AUTH:
       return {
         ...state,

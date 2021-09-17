@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-// import { GiHamburgerMenu, GiReactor } from "react-icons/gi";
 import { connect } from "react-redux";
 import { logout } from "../redux/auth/authActions";
 import { Link, useHistory } from "react-router-dom";
@@ -26,7 +25,7 @@ function NavBar(props) {
     return () => {
       document.removeEventListener("mousedown", handler);
     };
-  });
+  }, []);
 
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -64,17 +63,15 @@ function NavBar(props) {
                     <img src="/user-circle.svg" alt="user" />
                   )}
                 </div>
-                {/* <img className="avatar" src="logo192.png" alt="" /> */}
-                {/* <div className="avatar">{currentUser.fullname.charAt(0)}</div> */}
               </li>
               <li>
                 <p className="username">{user.fullname}</p>
               </li>
-              {/* <li>
-                <Link to="/dashboard" className="link nav-item">
-                  Dashboard
+              <li>
+                <Link to="/edit-profile" className="link nav-item">
+                  Edit Profile
                 </Link>
-              </li> */}
+              </li>
               <li>
                 <div
                   style={{ cursor: "pointer" }}

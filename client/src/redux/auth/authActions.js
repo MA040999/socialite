@@ -1,4 +1,4 @@
-import { AUTH, LOGOUT, AUTH_ERROR, VERIFY_AUTH } from "./authTypes";
+import { AUTH, LOGOUT, AUTH_ERROR, VERIFY_AUTH, UPDATE_PROFILE } from "./authTypes";
 import app from "../../axiosConfig";
 import { addNotificationMsg } from "../posts/postActions";
 
@@ -14,6 +14,19 @@ export const login = ({ email, password }, history) => {
     try {
       const user = await app.post("/auth/login/", { email, password });
       dispatch({ type: AUTH, payload: user?.data });
+      
+      history.push("/");
+    } catch (error) {
+      dispatch(addNotificationMsg(error.response.data.message));
+    }
+  };
+};
+
+export const updateProfile = (formData, history) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await app.put("/auth/update-profile/", formData);
+      dispatch({ type: UPDATE_PROFILE, payload: data });
       
       history.push("/");
     } catch (error) {

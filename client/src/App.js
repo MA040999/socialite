@@ -14,6 +14,7 @@ import { changeEditStatus } from "./redux/posts/postActions";
 import Confirmation from "./components/Confirmation";
 import GoToTop from "./components/GoToTop";
 import Notification from "./components/Notification";
+import EditProfile from "./components/EditProfile";
 
 function App(props) {
   const dispatch = useDispatch();
@@ -110,6 +111,7 @@ function App(props) {
         <NavBar />
         <Switch>
           <Route path="/" exact component={HomePage} />
+          <Route path="/edit-profile" exact component={EditProfile} />
           {user === null && (
             <Route path="/login" exact render={() => <Login />} />
           )}
