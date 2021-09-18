@@ -14,8 +14,8 @@ const postSchema = mongoose.Schema({
     default: null,
   },
   content: {
-    type: String, 
-    required: true
+    type: String,
+    default: null,
   },
   createdAt: {
     type: Date,
@@ -29,7 +29,10 @@ const postSchema = mongoose.Schema({
     type: [Object],
     default: [],
   },
-  images: [String],
+  images: {
+    type: [String],
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("Post", postSchema);

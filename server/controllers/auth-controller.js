@@ -2,6 +2,7 @@ const db = require("../models");
 const { v1: uuidv1 } = require("uuid");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { cloudinary } = require("../utils/cloudinary");
 require("dotenv").config();
 
 const authenticateUser = async function (req, res) {
@@ -125,19 +126,27 @@ const updateProfile = async (req, res) => {
     user.fullname = req.body.fullname;
   }
 
-  const file = req.files ? req.files.file : null;
+  const file = req.body.file ? req.body.file : null;
 
   if (file) {
-    let extData = file.name.split(".");
-    let ext = extData[extData.length - 1].toString();
-    let imageUrl = uploadFolderPath + uuidv1() + "." + ext;
-    let uploadPath = process.cwd() + imageUrl;
-    file.mv(uploadPath, function (err) {
-      if (err) return res.status(500).send(err);
+    try {
+      const uploadResponse = await cloudinary.uploader.upload(file, {
+        folder: "userDisplayImages",
+      });
+      // let extData = file.name.split(".");
+      // let ext = extData[extData.length - 1].toString();
+      // let imageUrl = uploadFolderPath + uuidv1() + "." + ext;
+      // let uploadPath = process.cwd() + imageUrl;
+      // file.mv(uploadPath, function (err) {
+      //   if (err) return res.status(500).send(err);
 
-      console.log("File uploaded!");
-    });
-    user.displayImage = imageUrl;
+      //   console.log("File uploaded!");
+      // });
+      // user.displayImage = imageUrl;
+      user.displayImage = uploadResponse.secure_url;
+    } catch (error) {
+      console.log(`error`, error);
+    }
   }
 
   const updatedUser = await db.Users.findByIdAndUpdate(req.userId, user, {

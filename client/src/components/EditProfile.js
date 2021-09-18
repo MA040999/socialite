@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { API_BASE_URL } from "../common/common";
 import { FiUpload } from "react-icons/fi";
 import { useHistory } from "react-router";
 import { updateProfile } from "../redux/auth/authActions";
+import { addNotificationMsg } from "../redux/posts/postActions";
 
 function EditProfile() {
   const history = useHistory();
@@ -11,24 +11,19 @@ function EditProfile() {
   const user = useSelector((state) => state.auth.user);
 
   const [fullName, setFullName] = useState(user?.fullname);
-  const [imageFile, setImageFile] = useState({});
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageFileData, setImageFileData] = useState(null);
 
   const validateData = () => {
-    if (imageUrl === null && fullName === "") return false;
+    if (imageFileData === null && fullName === "") return false;
 
     return true;
   };
 
   const handleSubmit = () => {
     if (validateData()) {
-      let formData = new FormData();
-
-      formData.append("file", imageFile);
-
-      formData.append("fullname", fullName);
-
-      dispatch(updateProfile(formData, history));
+      dispatch(
+        updateProfile({ fullname: fullName, file: imageFileData }, history)
+      );
     }
   };
 
@@ -37,11 +32,18 @@ function EditProfile() {
   };
 
   const handleSelectImage = (e) => {
-    const file = e.target.files;
-    const url = URL.createObjectURL(file[0]);
+    const file = e.target.files[0];
 
-    setImageFile(file[0]);
-    setImageUrl(url);
+    if (file.size <= 2097152) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setImageFileData(reader.result);
+      };
+    } else {
+      dispatch(addNotificationMsg("File Exceeds Size Limit - 2MB"));
+    }
+
     e.target.value = "";
   };
 
@@ -56,11 +58,14 @@ function EditProfile() {
         <div className="edit-profile-image">
           {user?.displayImage ? (
             <img
-              src={imageUrl ? imageUrl : API_BASE_URL + user?.displayImage}
+              src={imageFileData ? imageFileData : user?.displayImage}
               alt="user"
             />
           ) : (
-            <img src={imageUrl ? imageUrl : "/user-circle.svg"} alt="user" />
+            <img
+              src={imageFileData ? imageFileData : "/user-circle.svg"}
+              alt="user"
+            />
           )}
           <label className="upload-container" htmlFor="file-upload">
             <FiUpload />

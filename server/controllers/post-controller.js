@@ -1,50 +1,61 @@
 const mongoose = require("mongoose");
 const { v1: uuidv1 } = require("uuid");
+const { cloudinary } = require("../utils/cloudinary");
 const db = require("../models");
+const fs = require("fs");
 
 const createPost = async function (req, res) {
   if (!req.userId) return res.status(400).json({ message: "Unauthenticated" });
 
-  const uploadFolderPath = "/uploads/";
-
-  const content = req.body.content;
-  const images = req.files
-    ? Array.isArray(req.files.file)
-      ? req.files.file
-      : [req.files.file]
-    : null;
-  const imagePaths = [];
-
-  images
-    ? await images.forEach(function (image) {
-        let extData = image.name.split(".");
-        let ext = extData[extData.length - 1].toString();
-        let imageUrl = uploadFolderPath + uuidv1() + "." + ext;
-        let uploadPath = process.cwd() + imageUrl;
-        image.mv(uploadPath, function (err) {
-          if (err) return res.status(500).send(err);
-
-          console.log("File uploaded!");
-        });
-        imagePaths.push(imageUrl);
-      })
-    : "";
-
-  const user = await db.Users.findById(req.userId);
-
-  const post = new db.Posts({
-    content,
-    images: imagePaths,
-    creator: req.userId,
-    name: user.fullname,
-    displayImage: user.displayImage,
-  });
-
+  // const uploadFolderPath = "/uploads/";
   try {
-    await post.save();
-    res.status(201).json(post);
+    const content = req.body.content;
+    const images = req.body.file
+      ? Array.isArray(req.body.file)
+        ? req.body.file
+        : [req.body.file]
+      : null;
+    const imagePaths = [];
+
+    const promise = images
+      ? images.map(async function (image) {
+          try {
+            const uploadResponse = await cloudinary.uploader.upload(image, {
+              upload_preset: "images",
+            });
+            // let extData = image.name.split(".");
+            // let ext = extData[extData.length - 1].toString();
+            // let imageUrl = uploadFolderPath + uuidv1() + "." + ext;
+            // let uploadPath = process.cwd() + imageUrl;
+            // image.mv(uploadPath, function (err) {
+            //   if (err) return res.status(500).send(err);
+
+            //   console.log("File uploaded!");
+            // });
+            imagePaths.push(uploadResponse.secure_url);
+          } catch (error) {
+            console.log(`error.message`, error.message);
+          }
+        })
+      : [];
+
+    Promise.all(promise).then(async () => {
+      const user = await db.Users.findById(req.userId);
+
+      const post = new db.Posts({
+        content,
+        images: imagePaths,
+        creator: req.userId,
+        name: user.fullname,
+        displayImage: user.displayImage,
+      });
+
+      await post.save();
+      res.status(201).json(post);
+    });
   } catch (error) {
-    res.status(409).json(error);
+    console.log(`error`, error.message);
+    res.status(409).json(error.message);
   }
 };
 
@@ -84,36 +95,77 @@ const updatePost = async function (req, res) {
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send("No post with this id");
 
-    const uploadFolderPath = "/uploads/";
+    // const uploadFolderPath = "/uploads/";
 
     const content = req.body.content;
-    const images = req.files
-      ? Array.isArray(req.files.file)
-        ? req.files.file
-        : [req.files.file]
+    const images = req.body.file
+      ? Array.isArray(req.body.file)
+        ? req.body.file
+        : [req.body.file]
       : null;
     const imagePaths = [];
 
-    images
-      ? await images.forEach(function (image) {
-          let imageUrl = uploadFolderPath + image.name;
-          let uploadPath = process.cwd() + imageUrl;
-          image.mv(uploadPath, function (err) {
-            if (err) return res.status(500).send(err);
+    const promise = images
+      ? images.map(async function (image) {
+          if (image.substring(0, 5) !== "https") {
+            const uploadResponse = await cloudinary.uploader.upload(image, {
+              upload_preset: "images",
+            });
+            // let extData = image.name.split(".");
+            // let ext = extData[extData.length - 1].toString();
+            // let imageUrl = uploadFolderPath + uuidv1() + "." + ext;
+            // let uploadPath = process.cwd() + imageUrl;
+            // image.mv(uploadPath, function (err) {
+            //   if (err) return res.status(500).send(err);
 
-            console.log("File uploaded!");
-          });
-          imagePaths.push(imageUrl);
+            //   console.log("File uploaded!");
+            // });
+            imagePaths.push(uploadResponse.secure_url);
+          } else {
+            imagePaths.push(image);
+          }
         })
-      : "";
+      : [];
 
-    const updatedPost = await db.Posts.findByIdAndUpdate(
-      id,
-      { content, images: imagePaths },
-      { new: true }
-    );
+    Promise.all(promise).then(async () => {
+      const updatedPost = await db.Posts.findByIdAndUpdate(
+        id,
+        { content, images: imagePaths },
+        { new: true }
+      );
 
-    res.status(200).json({ updatedPost, message: "Post updated successfully" });
+      res
+        .status(200)
+        .json({ updatedPost, message: "Post updated successfully" });
+    });
+
+    // const images = req.body
+    //   ? Array.isArray(req.files.file)
+    //     ? req.files.file
+    //     : [req.files.file]
+    //   : null;
+    // const imagePaths = [];
+
+    // images
+    //   ? await images.forEach(function (image) {
+    //       let imageUrl = uploadFolderPath + image.name;
+    //       let uploadPath = process.cwd() + imageUrl;
+    //       image.mv(uploadPath, function (err) {
+    //         if (err) return res.status(500).send(err);
+
+    //         console.log("File uploaded!");
+    //       });
+    //       imagePaths.push(imageUrl);
+    //     })
+    //   : "";
+
+    // const updatedPost = await db.Posts.findByIdAndUpdate(
+    //   id,
+    //   { content, images: imagePaths },
+    //   { new: true }
+    // );
+
+    // res.status(200).json({ updatedPost, message: "Post updated successfully" });
   } catch (error) {
     res.status(409).json(error);
   }

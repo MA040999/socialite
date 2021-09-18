@@ -717,6 +717,7 @@ input[type="file"] {
 .notification-container p {
   letter-spacing: 1px;
   font-size: clamp(0.6em, 1.5vw, 1em);
+  text-transform: uppercase;
 }
 
 .edit-profile-container {

@@ -3,7 +3,6 @@ import { BiCommentDetail } from "react-icons/bi";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FiEdit, FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
-import { API_BASE_URL } from "../common/common";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import {
@@ -16,7 +15,6 @@ import {
 function Post(props) {
   const dispatch = useDispatch();
 
-  
   const {
     isComment,
     onPress,
@@ -31,9 +29,9 @@ function Post(props) {
     id,
     user,
   } = props;
-  
-  const [like, setLike] = useState(likeCount?.includes(user?.id))
-  const [likeLength, setLikeLength] = useState(likeCount?.length)
+
+  const [like, setLike] = useState(likeCount?.includes(user?.id));
+  const [likeLength, setLikeLength] = useState(likeCount?.length);
 
   const handleEditPost = (id) => {
     dispatch(changeEditStatus());
@@ -41,8 +39,8 @@ function Post(props) {
   };
 
   const handleLikeClick = () => {
-    setLike(!like)
-    setLikeLength(prev => like ? prev-1 : prev+1)
+    setLike(!like);
+    setLikeLength((prev) => (like ? prev - 1 : prev + 1));
     dispatch(likePost(id));
   };
 
@@ -56,7 +54,7 @@ function Post(props) {
       <div className="post-heading-container">
         <div className="post-image">
           {displayImage ? (
-            <img src={API_BASE_URL + displayImage} alt="user" />
+            <img src={displayImage} alt="user" />
           ) : (
             <img src="/user-circle.svg" alt="user" />
           )}
@@ -95,14 +93,7 @@ function Post(props) {
       ) : images.length > 0 ? (
         <div className="post-images-container">
           {images.map((image, index) => {
-            return (
-              <img
-                key={index}
-                className="image"
-                src={API_BASE_URL + image}
-                alt=""
-              />
-            );
+            return <img key={index} className="image" src={image} alt="" />;
           })}
         </div>
       ) : (

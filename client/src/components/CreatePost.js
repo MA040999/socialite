@@ -3,47 +3,44 @@ import { RiSendPlaneFill } from "react-icons/ri";
 import { BiImageAdd } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addNotificationMsg,
   changeEditStatus,
   comment,
   createPost,
   updatePost,
 } from "../redux/posts/postActions";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import { API_BASE_URL } from "../common/common";
 import { useParams } from "react-router";
 
-function CreatePost({ isComment, isEditPost, commentRef }) {
+function CreatePost({ isComment, isEditPost }) {
   const dispatch = useDispatch();
   const { id } = useParams();
   const isEdit = useSelector((state) => state.posts.isEditActive);
   const selectedPost = useSelector((state) => state.posts.selectedPost);
-  const postData = useSelector((state) =>{
-    if(state.posts.post){
-      return state.posts.post
+  const postData = useSelector((state) => {
+    if (state.posts.post) {
+      return state.posts.post;
+    } else {
+      return state.posts.posts.find((post) => post._id === selectedPost);
     }
-    else{
-      return state.posts.posts.find((post) => post._id === selectedPost)
-    }
-  }
-  );
+  });
   const user = useSelector((state) => state.auth.user);
 
   const [imagesFileArray, setImagesFileArray] = useState([]);
-  const [imageUrls, setImageUrls] = useState([]);
   const [postInput, setPostInput] = useState("");
+  const [imageFileData, setImageFileData] = useState([]);
 
   const clearInputs = () => {
-    setImageUrls([]);
     setPostInput("");
     setImagesFileArray([]);
+    setImageFileData([]);
   };
 
   const validateData = () => {
-    if(isComment){
-      if(postInput === '') return false
-    }
-    else{
-      if (imageUrls.length === 0 && postInput === "") return false;
+    if (isComment) {
+      if (postInput === "") return false;
+    } else {
+      if (imageFileData.length === 0 && postInput === "") return false;
     }
 
     return true;
@@ -51,48 +48,41 @@ function CreatePost({ isComment, isEditPost, commentRef }) {
 
   const handleSubmit = () => {
     if (validateData()) {
-      let formData = new FormData();
-      if(!isComment){
-        Array.from(imagesFileArray).map((file) => {
-          formData.append("file", file);
-          return null;
-        });
-      }
-
-      formData.append("content", postInput);
-
       if (isEdit) {
-        dispatch(updatePost(formData, selectedPost));
+        dispatch(
+          updatePost({ content: postInput, file: imageFileData }, selectedPost)
+        );
         dispatch(changeEditStatus());
-      }
-      else if(isComment){
-        dispatch(comment(formData, id))
+      } else if (isComment) {
+        dispatch(comment({ content: postInput }, id));
         clearInputs();
-      } 
-      else {
-        dispatch(createPost(formData));
+      } else {
+        dispatch(createPost({ content: postInput, file: imageFileData }));
         clearInputs();
       }
     }
   };
 
   const handleSelectImage = (e) => {
-    const files = e.target.files;
-    const urls = [];
-    const array = [];
+    const file = e.target.files[0];
 
-    Array.from(files).map((file) => {
+    if (file.size <= 4194304) {
       const isSelected = imagesFileArray.find(
         (image) => image.name === file.name
       );
       if (!isSelected) {
-        urls.push(URL.createObjectURL(file));
-        array.push(file);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          setImageFileData([...imageFileData, reader.result]);
+        };
+        setImagesFileArray([...imagesFileArray, file]);
+      } else {
+        dispatch(addNotificationMsg("Image already selected"));
       }
-      return null;
-    });
-    setImagesFileArray([...imagesFileArray, ...array]);
-    setImageUrls([...imageUrls, ...urls]);
+    } else {
+      dispatch(addNotificationMsg("File Exceeds Size Limit - 4MB"));
+    }
     e.target.value = "";
   };
 
@@ -102,7 +92,7 @@ function CreatePost({ isComment, isEditPost, commentRef }) {
       newImages.splice(index, 1);
       return newImages;
     });
-    setImageUrls((oldImages) => {
+    setImageFileData((oldImages) => {
       const newImages = [...oldImages];
       newImages.splice(index, 1);
       return newImages;
@@ -112,27 +102,7 @@ function CreatePost({ isComment, isEditPost, commentRef }) {
   useEffect(() => {
     if (isEdit) {
       setPostInput(postData.content);
-      const files = [];
-      const promise = postData.images.map(async (image) => {
-        files.push(
-          await fetch(API_BASE_URL + image)
-            .then((r) => r.blob())
-            .then(
-              (blobFile) =>
-                new File([blobFile], image.substring(9), { type: "image/*" })
-            )
-        );
-      });
-
-      Promise.all(promise).then(() => {
-        const urls = [];
-        Array.from(files).map((file) => {
-          urls.push(URL.createObjectURL(file));
-          return null;
-        });
-        setImagesFileArray(Array.from(files));
-        setImageUrls(urls);
-      });
+      setImageFileData(postData.images);
     }
     // eslint-disable-next-line
   }, []);
@@ -147,7 +117,7 @@ function CreatePost({ isComment, isEditPost, commentRef }) {
       <div className="post-heading-container">
         <div className={`post-image`}>
           {user?.displayImage ? (
-            <img src={API_BASE_URL + user?.displayImage} alt="user" />
+            <img src={user?.displayImage} alt="user" />
           ) : (
             <img src="/user-circle.svg" alt="user" />
           )}
@@ -180,7 +150,6 @@ function CreatePost({ isComment, isEditPost, commentRef }) {
                 id="file-upload"
                 type="file"
                 accept=".png, .jpg, .jpeg"
-                multiple
                 name="imageFile"
                 onChange={(e) => handleSelectImage(e)}
               />
@@ -193,9 +162,9 @@ function CreatePost({ isComment, isEditPost, commentRef }) {
           />
         </div>
       </div>
-      {imageUrls.length > 0 && (
+      {imageFileData.length > 0 && (
         <div className="post-images-container  create-post-images">
-          {imageUrls.map((image, index) => (
+          {imageFileData.map((image, index) => (
             <div key={index} className="image-container">
               <img src={image} className="image" alt="user" />
               <div
@@ -211,8 +180,10 @@ function CreatePost({ isComment, isEditPost, commentRef }) {
         </div>
       )}
 
-      {/* <pre style={{ color: "black" }}>{JSON.stringify(imagesFileArray, null, 2)}</pre>
-        <pre style={{ color: "black" }}>{JSON.stringify(imageUrls, null, 2)}</pre> */}
+      {/* <pre style={{ color: "black" }}>{JSON.stringify(imagesFileArray, null, 2)}</pre> */}
+      {/* <pre style={{ color: "black" }}>
+        {JSON.stringify(imageFileData, null, 2)}
+      </pre> */}
     </div>
   );
 }

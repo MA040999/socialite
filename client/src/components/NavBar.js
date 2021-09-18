@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { logout } from "../redux/auth/authActions";
 import { Link, useHistory } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import { API_BASE_URL } from "../common/common";
 
 function NavBar(props) {
   let menuRef = useRef();
@@ -58,7 +57,7 @@ function NavBar(props) {
               <li>
                 <div style={{ fontSize: "2rem" }} className="avatar">
                   {user?.displayImage ? (
-                    <img src={API_BASE_URL + user?.displayImage} alt="user" />
+                    <img src={user?.displayImage} alt="user" />
                   ) : (
                     <img src="/user-circle.svg" alt="user" />
                   )}
