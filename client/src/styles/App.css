@@ -792,7 +792,6 @@ input[type="file"] {
     var(--color2-transparent)
   );
   margin-top: 3rem;
-  margin-bottom: 5rem;
   padding: 3rem;
   border-radius: var(--radius);
   font-weight: lighter;
@@ -802,6 +801,10 @@ input[type="file"] {
 .footer b {
   font-weight: bolder;
   text-transform: uppercase;
+}
+
+.footer-comment {
+  margin-bottom: 5rem;
 }
 
 @media screen and (max-width: 1000px) {
