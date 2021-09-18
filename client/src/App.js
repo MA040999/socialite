@@ -15,10 +15,11 @@ import Confirmation from "./components/Confirmation";
 import GoToTop from "./components/GoToTop";
 import Notification from "./components/Notification";
 import EditProfile from "./components/EditProfile";
+import Footer from "./components/Footer";
 
 function App(props) {
   const dispatch = useDispatch();
-  const [scroll, setScroll] = useState(false)
+  const [scroll, setScroll] = useState(false);
 
   const { user } = props;
 
@@ -32,23 +33,23 @@ function App(props) {
     dispatch(verifyRefreshToken());
 
     setTimeout(() => {
-      refreshToken()
+      refreshToken();
     }, 600000 - 1000); //10 minutes - 1 second
-  }
+  };
 
   const checkScroll = () => {
-    setScroll(window.scrollY > 0 ? true : false)
-  }
+    setScroll(window.scrollY > 0 ? true : false);
+  };
 
   useEffect(() => {
-    refreshToken()
-  
-    window.addEventListener('scroll', checkScroll)
+    refreshToken();
 
-    return ()=>{
-      window.removeEventListener('scroll', checkScroll)
-    }
-   // eslint-disable-next-line
+    window.addEventListener("scroll", checkScroll);
+
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+    };
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -105,9 +106,7 @@ function App(props) {
         ""
       )}
       <div className="App">
-        {
-          notificationMsg && <Notification/>
-        }
+        {notificationMsg && <Notification />}
         <NavBar />
         <Switch>
           <Route path="/" exact component={HomePage} />
@@ -124,9 +123,8 @@ function App(props) {
           <Redirect to="/" />
         </Switch>
 
-        {
-          scroll && <GoToTop/>
-        }
+        {scroll && <GoToTop />}
+        <Footer />
         {/* <pre>{JSON.stringify(expiresIn, null, 2)}</pre> */}
       </div>
     </>

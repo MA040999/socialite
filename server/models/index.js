@@ -10,5 +10,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 module.exports = {
   Users: require("./Users"),
-  Posts: require('./Posts'),
+  Posts: require("./Posts"),
+  Comments: require("./Comments"),
 };

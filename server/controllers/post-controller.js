@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const { v1: uuidv1 } = require("uuid");
 const db = require("../models");
-const Comment = require("../models/Comment");
-const Posts = require("../models/Posts");
 
 const createPost = async function (req, res) {
   if (!req.userId) return res.status(400).json({ message: "Unauthenticated" });
@@ -32,10 +30,9 @@ const createPost = async function (req, res) {
       })
     : "";
 
-  const user = await db.Users.findById(req.userId)
+  const user = await db.Users.findById(req.userId);
 
-
-  const post = new Posts({
+  const post = new db.Posts({
     content,
     images: imagePaths,
     creator: req.userId,
@@ -53,27 +50,29 @@ const createPost = async function (req, res) {
 
 const getPosts = async function (req, res) {
   try {
-    const { page } = req.query
-    const LIMIT = 8
-    const maxPages = await db.Posts.countDocuments() / LIMIT
-    const skipDocs = (Number(page) - 1) * LIMIT
+    const { page } = req.query;
+    const LIMIT = 8;
+    const maxPages = (await db.Posts.countDocuments()) / LIMIT;
+    const skipDocs = (Number(page) - 1) * LIMIT;
 
-    const posts = await db.Posts.find().sort({ createdAt: -1 }).limit(LIMIT).skip(skipDocs);
-    res.status(200).json({posts, maxPages: Math.ceil(maxPages)});
+    const posts = await db.Posts.find()
+      .sort({ createdAt: -1 })
+      .limit(LIMIT)
+      .skip(skipDocs);
+    res.status(200).json({ posts, maxPages: Math.ceil(maxPages) });
   } catch (error) {
     res.status(404).json(error);
   }
 };
 
-const getPostById = async function(req,res){
+const getPostById = async function (req, res) {
   try {
-    const post = await db.Posts.findById(req.params.id)
-    res.status(200).json(post)
+    const post = await db.Posts.findById(req.params.id);
+    res.status(200).json(post);
   } catch (error) {
     res.status(404).json(error);
-    
   }
-}
+};
 
 const updatePost = async function (req, res) {
   try {
@@ -114,7 +113,7 @@ const updatePost = async function (req, res) {
       { new: true }
     );
 
-    res.status(200).json({updatedPost, message: 'Post updated successfully'});
+    res.status(200).json({ updatedPost, message: "Post updated successfully" });
   } catch (error) {
     res.status(409).json(error);
   }
@@ -181,20 +180,25 @@ const comment = async function (req, res) {
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send("No post with this id");
 
-    const user = await db.Users.findById(req.userId)
+    const user = await db.Users.findById(req.userId);
 
-    const comment = new Comment({
+    const comment = new db.Comments({
       content,
       creator: req.userId,
       name: user.fullname,
       displayImage: user.displayImage,
+      postId: id,
     });
+
+    await comment.save();
 
     const post = await db.Posts.findById(id);
 
-    post.comments.push(comment)
+    post.comments.push(comment._id);
 
-    const updatedPost = await db.Posts.findByIdAndUpdate(id, post, {new: true})
+    const updatedPost = await db.Posts.findByIdAndUpdate(id, post, {
+      new: true,
+    });
 
     return res.status(200).json(updatedPost);
   } catch (error) {
@@ -202,17 +206,40 @@ const comment = async function (req, res) {
   }
 };
 
+const fetchComments = async function (req, res) {
+  try {
+    const commentIds = JSON.parse(req.query.comments);
+    const commentsArray = [];
+
+    const promise = commentIds.map(async (id) => {
+      commentsArray.push(await db.Comments.findOne({ _id: { $eq: id } }));
+    });
+
+    Promise.all(promise).then(() => {
+      commentsArray.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+      res.status(200).json(commentsArray);
+    });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
 const search = async function (req, res) {
   try {
     const { searchQuery } = req.query;
 
-    const searchTerm = new RegExp(searchQuery, 'i')
+    const searchTerm = new RegExp(searchQuery, "i");
 
-    const searchedPosts = await db.Posts.find({$or: [{content: searchTerm}, {name: searchTerm}] })
+    const searchedPosts = await db.Posts.find({
+      $or: [{ content: searchTerm }, { name: searchTerm }],
+    });
 
     return res.status(200).json(searchedPosts);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -225,4 +252,5 @@ module.exports = {
   getPostById,
   comment,
   search,
+  fetchComments,
 };

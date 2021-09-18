@@ -17,6 +17,7 @@ import {
   SEARCH,
   SELECTED_POST,
   UPDATE_POST,
+  FETCH_COMMENTS,
 } from "./postTypes";
 import app from "../../axiosConfig";
 import { verifyAuth } from "../auth/authActions";
@@ -52,10 +53,10 @@ export const createPost = (formData) => async (dispatch) => {
 export const updatePost = (formData, id) => async (dispatch) => {
   try {
     dispatch(verifyAuth());
-    const {data} = await app.put(`/posts/update-post/${id}`, formData);
+    const { data } = await app.put(`/posts/update-post/${id}`, formData);
     dispatch({ type: UPDATE_POST, payload: data.updatedPost });
 
-    dispatch({type: ADD_NOTIFICATION_MSG, payload: data.message})
+    dispatch({ type: ADD_NOTIFICATION_MSG, payload: data.message });
   } catch (error) {
     console.log(`error`, error);
   }
@@ -67,9 +68,9 @@ export const deletePost = (id, history) => async (dispatch) => {
     const { data } = await app.delete(`/posts/delete-post/${id}`);
     dispatch({ type: DELETE_POST, payload: id });
 
-    dispatch({type: ADD_NOTIFICATION_MSG, payload: data.message})
+    dispatch({ type: ADD_NOTIFICATION_MSG, payload: data.message });
 
-    history && history.push('/')
+    history && history.push("/");
   } catch (error) {
     console.log(`error`, error);
   }
@@ -92,6 +93,17 @@ export const comment = (formData, id) => async (dispatch) => {
     dispatch({ type: COMMENT, payload: updatedPost.data });
   } catch (error) {
     console.log(`error`, error);
+  }
+};
+
+export const fetchComments = (ids) => async (dispatch) => {
+  try {
+    const { data } = await app.get(
+      `/posts/fetch-comments?comments=${JSON.stringify(ids)}`
+    );
+    dispatch({ type: FETCH_COMMENTS, payload: data });
+  } catch (error) {
+    console.log(`error`, error.response.data);
   }
 };
 
@@ -136,7 +148,7 @@ export const resetPage = () => {
 export const addNotificationMsg = (msg) => {
   return {
     type: ADD_NOTIFICATION_MSG,
-    payload: msg
+    payload: msg,
   };
 };
 
@@ -149,10 +161,9 @@ export const removeNotificationMsg = () => {
 export const changeSearchStatus = (status) => {
   return {
     type: IS_SEARCH_ACTIVE,
-    payload: status
+    payload: status,
   };
 };
-
 
 export const changeConfirmationStatus = () => {
   return {

@@ -4,6 +4,7 @@ import {
   COMMENT,
   CREATE_POST,
   DELETE_POST,
+  FETCH_COMMENTS,
   GET_POST,
   GET_POSTS,
   IS_COMMENT_ACTIVE,
@@ -27,6 +28,7 @@ const initialState = {
   page: 1,
   maxPages: null,
   post: null,
+  postComments: null,
   isCommentActive: false,
   isSearchActive: false,
   notificationMsg: null,
@@ -38,20 +40,25 @@ const postReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: [],
-        page: 1
-      }
+        page: 1,
+      };
     case REMOVE_POST:
-      return{
-        ...state, 
-        post: null
-      }
+      return {
+        ...state,
+        post: null,
+        postComments: null,
+      };
     case GET_POST:
       return {
-        ...state, 
-        post: action.payload
-      }
+        ...state,
+        post: action.payload,
+      };
     case GET_POSTS:
-      return { ...state, posts: [ ...state.posts, ...action.payload.posts], maxPages: action.payload.maxPages };
+      return {
+        ...state,
+        posts: [...state.posts, ...action.payload.posts],
+        maxPages: action.payload.maxPages,
+      };
     case DELETE_POST:
       return {
         ...state,
@@ -60,19 +67,28 @@ const postReducer = (state = initialState, action) => {
     case UPDATE_POST:
       return {
         ...state,
-        posts: state.posts && state.posts.map((post) =>
-          post._id === action.payload._id ? action.payload : post
-        ),
-        post: state.post && action.payload
+        posts:
+          state.posts &&
+          state.posts.map((post) =>
+            post._id === action.payload._id ? action.payload : post
+          ),
+        post: state.post && action.payload,
       };
     case SEARCH:
       return {
-        ...state, posts: action.payload
-      }
+        ...state,
+        posts: action.payload,
+      };
+    case FETCH_COMMENTS:
+      return {
+        ...state,
+        postComments: action.payload,
+      };
     case COMMENT:
       return {
-        ...state, post: state.post && action.payload
-      }
+        ...state,
+        post: state.post && action.payload,
+      };
     case CREATE_POST:
       return { ...state, posts: [action.payload, ...state.posts] };
     case SELECTED_POST:
@@ -83,31 +99,35 @@ const postReducer = (state = initialState, action) => {
     case RESET_PAGE:
       return {
         ...state,
-        page: 1
-      }
+        page: 1,
+      };
     case CHANGE_PAGE:
       return {
         ...state,
-        page: state.page + 1
-      }
+        page: state.page + 1,
+      };
     case REMOVE_NOTIFICATION_MSG:
       return {
-        ...state, notificationMsg: null
-      }
+        ...state,
+        notificationMsg: null,
+      };
     case ADD_NOTIFICATION_MSG:
       return {
-        ...state, notificationMsg: action.payload
-      }
+        ...state,
+        notificationMsg: action.payload,
+      };
     case IS_CONFIRMATION_ACTIVE:
       return { ...state, isConfirmationActive: !state.isConfirmationActive };
     case IS_COMMENT_ACTIVE:
       return {
-        ...state, isCommentActive: !state.isCommentActive
-      }
+        ...state,
+        isCommentActive: !state.isCommentActive,
+      };
     case IS_SEARCH_ACTIVE:
       return {
-        ...state, isSearchActive: action.payload
-      }
+        ...state,
+        isSearchActive: action.payload,
+      };
     case IS_EDIT_ACTIVE:
       return { ...state, isEditActive: !state.isEditActive };
     default:
