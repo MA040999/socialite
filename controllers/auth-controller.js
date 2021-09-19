@@ -171,7 +171,8 @@ const updateProfile = async (req, res) => {
 };
 
 const verifyAuth = async (req, res) => {
-  if (!req.userId) return res.status(401).json({ message: "Unauthorized" });
+  if (!req.userId)
+    return res.status(401).json({ message: "Please login or signup" });
 
   const user = await db.Users.findById(req.userId);
 
