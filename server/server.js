@@ -14,7 +14,9 @@ app.use(cookieParser());
 app.use(fileUpload());
 app.use(
   cors({
-    origin: isProduction ? "http://localhost:5000" : "http://localhost:3000",
+    origin: isProduction
+      ? "https://socialiite.herokuapp.com"
+      : "http://localhost:3000",
     credentials: true,
   })
 );
