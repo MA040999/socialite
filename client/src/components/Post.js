@@ -39,9 +39,13 @@ function Post(props) {
   };
 
   const handleLikeClick = () => {
-    setLike(!like);
-    setLikeLength((prev) => (like ? prev - 1 : prev + 1));
-    dispatch(likePost(id));
+    if (user) {
+      setLike(!like);
+      setLikeLength((prev) => (like ? prev - 1 : prev + 1));
+      dispatch(likePost(id));
+    } else {
+      dispatch(likePost(id));
+    }
   };
 
   const handleTrashClick = () => {
