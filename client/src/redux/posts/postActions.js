@@ -143,8 +143,11 @@ export const fetchComments = (ids) => async (dispatch) => {
 
 export const search = (searchTerm) => async (dispatch) => {
   try {
+    dispatch(startLoader());
+
     const result = await app.get(`/posts/search?searchQuery=${searchTerm}`);
     dispatch({ type: SEARCH, payload: result.data });
+    dispatch(stopLoader());
   } catch (error) {
     dispatch(stopLoader());
 

@@ -255,6 +255,8 @@ nav li {
   border: none;
   width: 2.5em;
   height: 2.5em;
+}
+.cancel-btn {
   z-index: 20;
 }
 /* SEARCH BAR STYLING END */
