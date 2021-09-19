@@ -19,7 +19,7 @@ app.use(
   })
 );
 
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 
 app.use("/auth/", require("./routes/auth"));
 app.use("/posts/", require("./routes/post"));

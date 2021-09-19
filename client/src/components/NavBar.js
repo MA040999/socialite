@@ -30,8 +30,8 @@ function NavBar(props) {
   return (
     <div className="navbar">
       <div>
-        <Link to="/" className="link logo">
-          <h1 className="logo-h1">Socialite</h1>
+        <Link to="/">
+          <img className="logo" src="logo-with-text-light.png" alt="logo" />
         </Link>
       </div>
       <SearchBar />
