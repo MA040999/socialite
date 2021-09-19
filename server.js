@@ -26,13 +26,13 @@ app.use(
 app.use("/auth/", require("./routes/auth"));
 app.use("/posts/", require("./routes/post"));
 
-// if (isProduction) {
-//   // express will serve up production assets
-//   app.use(express.static(`./build`));
+if (isProduction) {
+  // express will serve up production assets
+  app.use(express.static(`client/build`));
 
-//   // express will serve up the front-end index.html file if it doesn't recognize the route
-//   app.get("*", (req, res) => res.sendFile(resolve(`./build/index.html`)));
-// }
+  // express will serve up the front-end index.html file if it doesn't recognize the route
+  app.get("*", (req, res) => res.sendFile(resolve(`client/build/index.html`)));
+}
 
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
