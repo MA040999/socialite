@@ -16,6 +16,7 @@ import GoToTop from "./components/GoToTop";
 import Notification from "./components/Notification";
 import EditProfile from "./components/EditProfile";
 import Footer from "./components/Footer";
+import Loader from "./components/Loader";
 
 function App(props) {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function App(props) {
 
   const { user } = props;
 
+  const isLoading = useSelector((state) => state.posts.isLoading);
   const editStatus = useSelector((state) => state.posts.isEditActive);
   const notificationMsg = useSelector((state) => state.posts.notificationMsg);
   const confirmationStatus = useSelector(
@@ -106,6 +108,7 @@ function App(props) {
         ""
       )}
       <div className="App">
+        {isLoading && <Loader />}
         {notificationMsg && <Notification />}
         <NavBar />
         <Switch>

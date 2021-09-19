@@ -18,52 +18,71 @@ import {
   SELECTED_POST,
   UPDATE_POST,
   FETCH_COMMENTS,
+  STOP_LOADER,
+  START_LOADER,
 } from "./postTypes";
 import app from "../../axiosConfig";
 import { verifyAuth } from "../auth/authActions";
 
 export const getPosts = (page) => async (dispatch) => {
   try {
+    dispatch(startLoader());
     const posts = await app.get(`/posts/get-posts?page=${page}`);
     dispatch({ type: GET_POSTS, payload: posts.data });
+    dispatch(stopLoader());
   } catch (error) {
+    dispatch(stopLoader());
+
     console.log(`error`, error);
   }
 };
 
 export const getPostById = (id) => async (dispatch) => {
   try {
+    dispatch(startLoader());
     const post = await app.get(`/posts/get-post/${id}`);
     dispatch({ type: GET_POST, payload: post.data });
+    dispatch(stopLoader());
   } catch (error) {
+    dispatch(stopLoader());
+
     console.log(`error`, error);
   }
 };
 
 export const createPost = (formData) => async (dispatch) => {
   try {
+    dispatch(startLoader());
     dispatch(verifyAuth());
     const post = await app.post("/posts/create-post/", formData);
     dispatch({ type: CREATE_POST, payload: post.data });
+    dispatch(stopLoader());
   } catch (error) {
+    dispatch(stopLoader());
+
     console.log(`error`, error);
   }
 };
 
 export const updatePost = (formData, id) => async (dispatch) => {
   try {
+    dispatch(startLoader());
     dispatch(verifyAuth());
     const { data } = await app.put(`/posts/update-post/${id}`, formData);
     dispatch({ type: UPDATE_POST, payload: data.updatedPost });
-
     dispatch({ type: ADD_NOTIFICATION_MSG, payload: data.message });
+    dispatch(stopLoader());
   } catch (error) {
+    dispatch(stopLoader());
+
     console.log(`error`, error);
   }
 };
 
 export const deletePost = (id, history) => async (dispatch) => {
   try {
+    dispatch(startLoader());
+
     dispatch(verifyAuth());
     const { data } = await app.delete(`/posts/delete-post/${id}`);
     dispatch({ type: DELETE_POST, payload: id });
@@ -71,7 +90,10 @@ export const deletePost = (id, history) => async (dispatch) => {
     dispatch({ type: ADD_NOTIFICATION_MSG, payload: data.message });
 
     history && history.push("/");
+    dispatch(stopLoader());
   } catch (error) {
+    dispatch(stopLoader());
+
     console.log(`error`, error);
   }
 };
@@ -82,27 +104,39 @@ export const likePost = (id) => async (dispatch) => {
     const likedPost = await app.put(`/posts/like-post/${id}`);
     dispatch({ type: UPDATE_POST, payload: likedPost.data });
   } catch (error) {
+    dispatch(stopLoader());
+
     console.log(`error`, error);
   }
 };
 
 export const comment = (formData, id) => async (dispatch) => {
   try {
+    dispatch(startLoader());
+
     dispatch(verifyAuth());
     const updatedPost = await app.post(`/posts/comment/${id}`, formData);
     dispatch({ type: COMMENT, payload: updatedPost.data });
+    dispatch(stopLoader());
   } catch (error) {
+    dispatch(stopLoader());
+
     console.log(`error`, error);
   }
 };
 
 export const fetchComments = (ids) => async (dispatch) => {
   try {
+    dispatch(startLoader());
+
     const { data } = await app.get(
       `/posts/fetch-comments?comments=${JSON.stringify(ids)}`
     );
     dispatch({ type: FETCH_COMMENTS, payload: data });
+    dispatch(stopLoader());
   } catch (error) {
+    dispatch(stopLoader());
+
     console.log(`error`, error.response.data);
   }
 };
@@ -112,6 +146,8 @@ export const search = (searchTerm) => async (dispatch) => {
     const result = await app.get(`/posts/search?searchQuery=${searchTerm}`);
     dispatch({ type: SEARCH, payload: result.data });
   } catch (error) {
+    dispatch(stopLoader());
+
     console.log(`error`, error);
   }
 };
@@ -174,6 +210,16 @@ export const changeConfirmationStatus = () => {
 export const changeComment = () => {
   return {
     type: IS_COMMENT_ACTIVE,
+  };
+};
+export const startLoader = () => {
+  return {
+    type: START_LOADER,
+  };
+};
+export const stopLoader = () => {
+  return {
+    type: STOP_LOADER,
   };
 };
 

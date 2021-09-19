@@ -17,6 +17,8 @@ import {
   RESET_PAGE,
   SEARCH,
   SELECTED_POST,
+  START_LOADER,
+  STOP_LOADER,
   UPDATE_POST,
 } from "./postTypes";
 
@@ -32,6 +34,7 @@ const initialState = {
   isCommentActive: false,
   isSearchActive: false,
   notificationMsg: null,
+  isLoading: false,
 };
 
 const postReducer = (state = initialState, action) => {
@@ -127,6 +130,16 @@ const postReducer = (state = initialState, action) => {
       return {
         ...state,
         isSearchActive: action.payload,
+      };
+    case START_LOADER:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case STOP_LOADER:
+      return {
+        ...state,
+        isLoading: false,
       };
     case IS_EDIT_ACTIVE:
       return { ...state, isEditActive: !state.isEditActive };

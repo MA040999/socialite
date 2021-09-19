@@ -9,7 +9,7 @@ import {
   createPost,
   updatePost,
 } from "../redux/posts/postActions";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { useParams } from "react-router";
 
 function CreatePost({ isComment, isEditPost }) {
