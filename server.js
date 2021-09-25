@@ -14,12 +14,9 @@ const whitelist = [
 ];
 var corsOptions = {
   origin: function (origin, callback) {
-    console.log(`origin-outside`, origin);
     if (whitelist.indexOf(origin) !== -1 || !origin) {
-      console.log(`origin-inside`, origin);
       callback(null, true);
     } else {
-      console.log("asdasdasd");
       callback(new Error("Not allowed by CORS"));
     }
   },
