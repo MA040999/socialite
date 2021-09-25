@@ -12,20 +12,26 @@ const whitelist = [
   "http://localhost:3000",
   "http://localhost:19002",
 ];
+var corsOptions = {
+  origin: function (origin, callback) {
+    console.log(`origin-outside`, origin);
+    if (whitelist.indexOf(origin) !== -1) {
+      console.log(`origin-inside`, origin);
+      callback(null, true);
+    } else {
+      console.log("asdasdasd");
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 app.use(fileUpload());
 
-app.use(
-  cors({
-    origin: isProduction
-      ? "https://socialiite.herokuapp.com"
-      : "http://localhost:3000",
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 
 // app.use("/uploads", express.static("uploads"));
 
