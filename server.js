@@ -20,13 +20,9 @@ app.use(fileUpload());
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: isProduction
+      ? "https://socialiite.herokuapp.com"
+      : "http://localhost:3000",
     credentials: true,
   })
 );
