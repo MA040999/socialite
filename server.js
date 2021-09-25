@@ -7,16 +7,26 @@ const fileUpload = require("express-fileupload");
 
 const isProduction = process.env.NODE_ENV === "production";
 const PORT = process.env.PORT || 4000;
+const whitelist = [
+  "https://socialiite.herokuapp.com",
+  "http://localhost:3000",
+  "http://localhost:19002",
+];
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 app.use(fileUpload());
+
 app.use(
   cors({
-    origin: isProduction
-      ? "https://socialiite.herokuapp.com"
-      : "http://localhost:3000",
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
