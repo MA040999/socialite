@@ -62,15 +62,20 @@ const createPost = async function (req, res) {
 const getPosts = async function (req, res) {
   try {
     const { page } = req.query;
-    const LIMIT = 8;
-    const maxPages = (await db.Posts.countDocuments()) / LIMIT;
-    const skipDocs = (Number(page) - 1) * LIMIT;
+    if (page) {
+      const LIMIT = 8;
+      const maxPages = (await db.Posts.countDocuments()) / LIMIT;
+      const skipDocs = (Number(page) - 1) * LIMIT;
 
-    const posts = await db.Posts.find()
-      .sort({ createdAt: -1 })
-      .limit(LIMIT)
-      .skip(skipDocs);
-    res.status(200).json({ posts, maxPages: Math.ceil(maxPages) });
+      const posts = await db.Posts.find()
+        .sort({ createdAt: -1 })
+        .limit(LIMIT)
+        .skip(skipDocs);
+      res.status(200).json({ posts, maxPages: Math.ceil(maxPages) });
+    } else {
+      const posts = await db.Posts.find().sort({ createdAt: -1 });
+      res.status(200).json({ posts });
+    }
   } catch (error) {
     res.status(404).json(error);
   }

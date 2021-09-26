@@ -54,6 +54,7 @@ const authenticateUser = async function (req, res) {
         displayImage: user.displayImage,
       },
       token,
+      refreshToken,
     });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
@@ -108,6 +109,7 @@ const createUser = async (req, res) => {
           displayImage: result.displayImage,
         },
         token,
+        refreshToken,
       });
     });
   } catch {
@@ -189,7 +191,8 @@ const logout = (req, res) => {
 };
 
 const verifyRefreshToken = async (req, res) => {
-  const refreshToken = req.cookies.__refresh__token;
+  const refreshToken =
+    req.cookies.__refresh__token || req.headers["x-access-token"];
 
   if (refreshToken) {
     const decodedTokenData = jwt.verify(

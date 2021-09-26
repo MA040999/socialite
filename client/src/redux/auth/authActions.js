@@ -25,6 +25,8 @@ export const login = ({ email, password }, history) => {
       dispatch(startLoader());
 
       const user = await app.post("/auth/login/", { email, password });
+      delete user?.data.refreshToken;
+
       dispatch({ type: AUTH, payload: user?.data });
 
       history.push("/");
@@ -88,6 +90,7 @@ export const signup = ({ fullname, email, password }, history) => {
         email,
         password,
       });
+      delete user?.data.refreshToken;
       dispatch({ type: AUTH, payload: user?.data });
 
       history.push("/");
